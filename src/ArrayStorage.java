@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 /**
  * Array based storage for Resumes
  */
@@ -8,10 +10,19 @@ public class ArrayStorage {
     }
 
     void save(Resume r) {
+        int i = 0;
+        while (storage[i] != null ) { //ищем пустой элемент
+            i++;
+        }
+        storage[i] = r;
     }
 
     Resume get(String uuid) {
-        return null;
+        int i = 0;
+        while (storage[i]!=null&&!storage[i].uuid.equals(uuid)) {
+            i++;
+        }
+        return storage[i];
     }
 
     void delete(String uuid) {
@@ -25,6 +36,10 @@ public class ArrayStorage {
     }
 
     int size() {
-        return 0;
+        int i = 0;
+        while (storage[i] != null) {
+            i++;
+        };
+        return i;
     }
 }
