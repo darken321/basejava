@@ -26,6 +26,19 @@ public class ArrayStorage {
     }
 
     void delete(String uuid) {
+        //uuid = "345";
+        int j = 0;
+//        for (int i = 0; i < this.size(); i++) {
+//
+//        }
+        System.out.println("get " + uuid + " = " + this.get(uuid)); //нашел нужную строку
+        while (this.get(uuid)!=null & j<10 ) { //можно заменить на IF если искать один элемент while чтоб удалить все
+          System.out.println("нашел " + ++j);
+          //тут надо делать поиск элемента равного uuid с индексом и удаление его
+        }
+//        while (this.get(uuid)!=null & j<10) {  //тут я тестирую нашел ли строку uuid в storage
+//            System.out.println("нашел " + ++j); //лимит в 10 ибо программа уходит к границе int
+//        }
     }
 
     /**
