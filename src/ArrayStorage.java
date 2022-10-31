@@ -3,35 +3,41 @@
  */
 public class ArrayStorage {
     Resume[] storage = new Resume[10000];
+    int size; //число резюме
 
     void clear() {
-        int storageSize = this.size(); //сохраняю фиксирую число резюме
-        for (int i = 0; i < storageSize; i++) { //стираю резюме
+        for (int i = 0; i < size; i++) { //стираю резюме
             storage[i] = null;
         }
+        size = 0;
     }
 
     void save(Resume r) {
         if (r.uuid != null) { //если на входе не null
-            storage[this.size()] = r; //сохраняю в последнюю свободную ячейку
+            storage[size] = r; //сохраняю в последнюю свободную ячейку
+            size++;
         }
     }
 
     Resume get(String uuid) {
         int i = 0;
-        while (storage[i] != null && !storage[i].uuid.equals(uuid)) { //ищем uuid пока ячейки не null
+        while (i < size && !storage[i].uuid.equals(uuid)) { //ищем uuid
             i++;
         }
-        return storage[i];
+        if (i >= size){ //не нашел, нет резюме i(0) = size(0)
+            return null;
+        }
+        else {
+            return storage[i]; //нашел
+        }
     }
 
     void delete(String uuid) {
         int i = 0;
-        while (this.get(uuid) != null) { //пока элементы равные uuid есть в резюме, крутим цикл
-            while (storage[i] != null && storage[i].uuid.equals(uuid)) { //ищем резюме uuid
-                int storageSize = this.size(); //сохранил число резюме
-                //сдвигаю массив начиная с элемента i
-                System.arraycopy(storage, i + 1, storage, i, storageSize - i);
+        while (get(uuid) != null) { //пока элементы равные uuid есть в резюме, крутим цикл
+            while (i< size && storage[i].uuid.equals(uuid)) { //ищем резюме uuid
+                System.arraycopy(storage, i + 1, storage, i, size - i); //сдвигаю массив начиная с элемента i
+                size--;
             }
             i++;
         }
@@ -41,17 +47,12 @@ public class ArrayStorage {
      * @return array, contains only Resumes in storage (without null)
      */
     Resume[] getAll() {
-        Resume[] r = new Resume[this.size()]; //создаем новый массив длиной с число резюме
-        //копируем в него часть массива с резюме
-        System.arraycopy(storage, 0, r, 0, this.size());
-        return r;
+        Resume[] allResume = new Resume[size]; //создаем новый массив длиной с число резюме
+        System.arraycopy(storage, 0, allResume, 0, size); //копируем в него часть массива с резюме
+        return allResume;
     }
 
     int size() {
-        int i = 0;
-        while (storage[i] != null) { //пробегаем по резюме пока не null
-            i++;
-        }
-        return i;
+        return size;
     }
 }
