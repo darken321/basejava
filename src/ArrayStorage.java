@@ -12,7 +12,9 @@ public class ArrayStorage {
     }
 
     void save(Resume r) {
-        storage[this.size()] = r;
+        if (r.uuid!=null) {
+            storage[this.size()] = r;
+        }
     }
 
     Resume get(String uuid) {
