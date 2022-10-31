@@ -24,22 +24,19 @@ public class ArrayStorage {
         while (i < size && !storage[i].uuid.equals(uuid)) { //ищем uuid
             i++;
         }
-        if (i >= size){ //не нашел, нет резюме i(0) = size(0)
+        if (i >= size) { //не нашел, нет резюме i(0) = size(0)
             return null;
-        }
-        else {
+        } else {
             return storage[i]; //нашел
         }
     }
 
     void delete(String uuid) {
-        int i = 0;
-        while (get(uuid) != null) { //пока элементы равные uuid есть в резюме, крутим цикл
-            while (i< size && storage[i].uuid.equals(uuid)) { //ищем резюме uuid
+        for (int i = 0; i < size; i++) {
+            if (storage[i].uuid.equals(uuid)) { //ищем резюме uuid
                 System.arraycopy(storage, i + 1, storage, i, size - i); //сдвигаю массив начиная с элемента i
                 size--;
             }
-            i++;
         }
     }
 
