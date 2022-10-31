@@ -20,15 +20,12 @@ public class ArrayStorage {
     }
 
     Resume get(String uuid) {
-        int i = 0;
-        while (i < size && !storage[i].uuid.equals(uuid)) { //ищем uuid
-            i++;
+        for (int i = 0; i < size; i++) {
+            if (storage[i].uuid.equals(uuid)) { //если элемент совпал с uuid
+                return storage[i];
+            }
         }
-        if (i >= size) { //не нашел, нет резюме i(0) = size(0)
-            return null;
-        } else {
-            return storage[i]; //нашел
-        }
+        return null; //если не совпал с uuid
     }
 
     void delete(String uuid) {
