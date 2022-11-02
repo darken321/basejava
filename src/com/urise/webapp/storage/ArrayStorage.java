@@ -20,13 +20,13 @@ public class ArrayStorage {
     public void save(Resume r) { // три проверки - что на входе не null, что резюме не найдено и что storage переполнено
 
         if (r.getUuid() == null) {
-            System.out.println("Вы задали пустое uuid");
+            System.out.println("Вы задали пустое uuid.");
         } else {
             if (size >= MAX_STORAGE) {
                 System.out.println("Переполнение массива резюме");
             } else {
-                if (get(r.getUuid())!=null) { //если такое резюме уже есть
-                    System.out.println("Такое резюме уже есть");
+                if (get(r.getUuid()) != null) { //если такое резюме уже есть
+                    System.out.println("Резюме + " + r.getUuid() + " уже есть.");
                 } else {
                     storage[size] = r; //сохраняю в последнюю свободную ячейку
                     size++;
@@ -41,16 +41,21 @@ public class ArrayStorage {
                 return storage[i];
             }
         }
+        System.out.println("Резюме + " + uuid + " не найдено.");
         return null; // если не совпал с uuid
     }
 
     public void delete(String uuid) {
-        for (int i = 0; i < size; i++) {
-            if (storage[i].getUuid().equals(uuid)) { // ищем резюме uuid
-                storage[i]=storage[size-1];
-                storage[size-1] = null;
-                size--;
+        if (get(uuid) != null) { // проверяем, есть ли такое резюме
+            for (int i = 0; i < size; i++) {
+                if (storage[i].getUuid().equals(uuid)) { // ищем резюме uuid
+                    storage[i] = storage[size - 1];
+                    storage[size - 1] = null;
+                    size--;
+                }
             }
+        } else {
+            System.out.println("Резюме + " + uuid + " не найдено.");
         }
     }
 
