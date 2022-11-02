@@ -6,8 +6,8 @@ import com.urise.webapp.model.Resume;
  * Array based storage for Resumes
  */
 public class ArrayStorage {
-    Resume[] storage = new Resume[10000];
-    int size; //число резюме
+    private Resume[] storage = new Resume[10000];
+    private int size; //число резюме
 
     public void clear() {
         for (int i = 0; i < size; i++) { //стираю резюме
@@ -17,7 +17,7 @@ public class ArrayStorage {
     }
 
     public void save(Resume r) {
-        if (r.uuid != null) { //если на входе не null
+        if (r.getUuid() != null) { //если на входе не null
             storage[size] = r; //сохраняю в последнюю свободную ячейку
             size++;
         }
@@ -25,7 +25,7 @@ public class ArrayStorage {
 
     public Resume get(String uuid) {
         for (int i = 0; i < size; i++) {
-            if (storage[i].uuid.equals(uuid)) { //если элемент совпал с uuid
+            if (storage[i].getUuid().equals(uuid)) { //если элемент совпал с uuid
                 return storage[i];
             }
         }
@@ -34,7 +34,7 @@ public class ArrayStorage {
 
     public void delete(String uuid) {
         for (int i = 0; i < size; i++) {
-            if (storage[i].uuid.equals(uuid)) { //ищем резюме uuid
+            if (storage[i].getUuid().equals(uuid)) { //ищем резюме uuid
                 storage[i]=storage[size-1];
                 storage[size-1] = null;
                 size--;
