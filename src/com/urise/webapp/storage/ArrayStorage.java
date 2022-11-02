@@ -35,7 +35,8 @@ public class ArrayStorage {
     public void delete(String uuid) {
         for (int i = 0; i < size; i++) {
             if (storage[i].uuid.equals(uuid)) { //ищем резюме uuid
-                System.arraycopy(storage, i + 1, storage, i, size - i); //сдвигаю массив начиная с элемента i
+                storage[i]=storage[size-1];
+                storage[size-1] = null;
                 size--;
             }
         }
