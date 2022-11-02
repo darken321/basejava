@@ -6,7 +6,8 @@ import com.urise.webapp.model.Resume;
  * Array based storage for Resumes
  */
 public class ArrayStorage {
-    private Resume[] storage = new Resume[10000];
+    private final int MAX_STORAGE = 10000;
+    private Resume[] storage = new Resume[MAX_STORAGE];
     private int size; //число резюме
 
     public void clear() {
@@ -16,25 +17,36 @@ public class ArrayStorage {
         size = 0;
     }
 
-    public void save(Resume r) {
-        if (r.getUuid() != null) { //если на входе не null
-            storage[size] = r; //сохраняю в последнюю свободную ячейку
-            size++;
+    public void save(Resume r) { // три проверки - что на входе не null, что резюме не найдено и что storage переполнено
+
+        if (r.getUuid() == null) {
+            System.out.println("Вы задали пустое uuid");
+        } else {
+            if (size >= MAX_STORAGE) {
+                System.out.println("Переполнение массива резюме");
+            } else {
+                if (get(r.getUuid())!=null) { //если такое резюме уже есть
+                    System.out.println("Такое резюме уже есть");
+                } else {
+                    storage[size] = r; //сохраняю в последнюю свободную ячейку
+                    size++;
+                }
+            }
         }
     }
 
-    public Resume get(String uuid) {
+    public Resume get(String uuid) { // если есть, возвращает резюме, если нет null
         for (int i = 0; i < size; i++) {
-            if (storage[i].getUuid().equals(uuid)) { //если элемент совпал с uuid
+            if (storage[i].getUuid().equals(uuid)) { // если элемент совпал с uuid
                 return storage[i];
             }
         }
-        return null; //если не совпал с uuid
+        return null; // если не совпал с uuid
     }
 
     public void delete(String uuid) {
         for (int i = 0; i < size; i++) {
-            if (storage[i].getUuid().equals(uuid)) { //ищем резюме uuid
+            if (storage[i].getUuid().equals(uuid)) { // ищем резюме uuid
                 storage[i]=storage[size-1];
                 storage[size-1] = null;
                 size--;
