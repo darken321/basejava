@@ -39,7 +39,6 @@ public class ArrayStorage {
         }
     }
 
-
     public Resume get(String uuid) { // если есть, возвращает резюме, если нет null
         if (getResumeIndex(uuid) == -1) {
             return null; // если не нашел uuid
