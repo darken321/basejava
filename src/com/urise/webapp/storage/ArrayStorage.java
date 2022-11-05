@@ -8,8 +8,8 @@ import static java.util.Arrays.fill;
  * Array based storage for Resumes
  */
 public class ArrayStorage {
-    private final int MAX_STORAGE = 10000;
-    private Resume[] storage = new Resume[MAX_STORAGE];
+    private final int STORAGE_LIMIT = 10000;
+    private final Resume[] storage = new Resume[STORAGE_LIMIT];
     private int size; // число резюме
 
     public void clear() {
@@ -18,68 +18,44 @@ public class ArrayStorage {
     }
 
     public void update(Resume r) {
-        if (r.getUuid() == null) {
-            System.out.println("Вы задали пустое uuid.");
+        int index = getResumeIndex(r.getUuid());
+        if (index == -1) { // такого резюме нет в storage
+            System.out.println("Резюме " + r.getUuid() + " не найдено.");
         } else {
-            Integer num = getResumeIndex(r.getUuid());
-            if (num != null) { // такое резюме есть в storage
-                storage[num] = r;
+            storage[index] = r;
+        }
+    }
+
+    public void save(Resume r) { // две проверки - что резюме не найдено и что storage переполнено
+        if (size >= STORAGE_LIMIT) {
+            System.out.println("Переполнение массива резюме");
+        } else {
+            if (getResumeIndex(r.getUuid()) == -1) { // если такого резюме нет
+                storage[size] = r; // сохраняю в последнюю свободную ячейку
+                size++;
             } else {
-                System.out.println("Резюме " + r.getUuid() + " не найдено.");
+                System.out.println("Резюме " + r.getUuid() + " уже есть.");
             }
         }
     }
 
-    public void save(Resume r) { // три проверки - что на входе не null, что резюме не найдено и что storage переполнено
-        if (r.getUuid() == null) {
-            System.out.println("Вы задали пустое uuid.");
-        } else {
-            if (size >= MAX_STORAGE) {
-                System.out.println("Переполнение массива резюме");
-            } else {
-                if (getResumeIndex(r.getUuid()) != null) { //если такое резюме уже есть
-                    System.out.println("Резюме " + r.getUuid() + " уже есть.");
-                } else {
-                    storage[size] = r; // сохраняю в последнюю свободную ячейку
-                    size++;
-                }
-            }
-        }
-    }
-
-    private Integer getResumeIndex(String uuid) { // возвращает номер резюме в storage или null если не нашел
-        for (int i = 0; i < size; i++) {
-            if (storage[i].getUuid().equals(uuid)) { // если элемент совпал с uuid
-                return i;
-            }
-        }
-        return null;
-    }
 
     public Resume get(String uuid) { // если есть, возвращает резюме, если нет null
-        if (uuid == null) {
-            System.out.println("Вы задали пустое uuid.");
-            return null;
+        if (getResumeIndex(uuid) == -1) {
+            return null; // если не нашел uuid
         } else {
-            if (getResumeIndex(uuid) != null) {
-                return storage[getResumeIndex(uuid)];
-            } else {
-                return null; // если не совпал с uuid
-            }
+            return storage[getResumeIndex(uuid)];
         }
     }
 
     public void delete(String uuid) {
-        if (uuid == null) {
-            System.out.println("Вы задали пустое uuid.");
+        int index = getResumeIndex(uuid);
+        if (index == -1) { // такого резюме нет в storage
+            System.out.println("Резюме " + uuid + " не найдено.");
         } else {
-            Integer num = getResumeIndex(uuid);
-            if (num != null) { // такое резюме есть в storage
-                System.arraycopy(storage, num + 1, storage, num, size - num);
-                size--;
-            } else {
-                System.out.println("Резюме " + uuid + " не найдено.");
-            }
+            storage[index] = storage[size - 1];
+            storage[size - 1] = null;
+            size--;
         }
     }
 
@@ -94,5 +70,14 @@ public class ArrayStorage {
 
     public int size() {
         return size;
+    }
+
+    private int getResumeIndex(String uuid) { // возвращает номер резюме в storage или -1 если не нашел
+        for (int i = 0; i < size; i++) {
+            if (storage[i].getUuid().equals(uuid)) { // если элемент совпал с uuid
+                return i;
+            }
+        }
+        return -1;
     }
 }
