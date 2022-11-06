@@ -10,7 +10,7 @@ import java.util.Arrays;
 public class ArrayStorage {
     private final int STORAGE_LIMIT = 10000;
     private final Resume[] storage = new Resume[STORAGE_LIMIT];
-    private int size; // число резюме
+    private int size;
 
     public void clear() {
         Arrays.fill(storage, 0, size, null);
@@ -18,7 +18,7 @@ public class ArrayStorage {
     }
 
     public void update(Resume r) {
-        int index = getResumeIndex(r.getUuid());
+        int index = getIndex(r.getUuid());
         if (index == -1) {
             System.out.println("Резюме " + r.getUuid() + " не найдено.");
         } else {
@@ -27,29 +27,28 @@ public class ArrayStorage {
     }
 
     public void save(Resume r) {
-        if (size >= STORAGE_LIMIT) {
+        if (size == STORAGE_LIMIT) {
             System.out.println("Переполнение массива резюме");
+        } else if (getIndex(r.getUuid()) != -1) {
+            System.out.println("Резюме " + r.getUuid() + " уже есть.");
         } else {
-            if (getResumeIndex(r.getUuid()) != -1) {
-                System.out.println("Резюме " + r.getUuid() + " уже есть.");
-            } else {
-                storage[size] = r;
-                size++;
-            }
+            storage[size] = r;
+            size++;
         }
     }
 
     public Resume get(String uuid) {
-        if (getResumeIndex(uuid) == -1) {
+        int index = getIndex(uuid);
+        if (index == -1) {
             System.out.println("Резюме не существует");
             return null;
         } else {
-            return storage[getResumeIndex(uuid)];
+            return storage[index];
         }
     }
 
     public void delete(String uuid) {
-        int index = getResumeIndex(uuid);
+        int index = getIndex(uuid);
         if (index == -1) {
             System.out.println("Резюме " + uuid + " не найдено.");
         } else {
@@ -70,7 +69,7 @@ public class ArrayStorage {
         return size;
     }
 
-    private int getResumeIndex(String uuid) {
+    private int getIndex(String uuid) {
         for (int i = 0; i < size; i++) {
             if (storage[i].getUuid().equals(uuid)) {
                 return i;
