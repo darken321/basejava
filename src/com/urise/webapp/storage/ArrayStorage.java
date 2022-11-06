@@ -10,7 +10,7 @@ import java.util.Arrays;
 public class ArrayStorage {
     private final int STORAGE_LIMIT = 10000;
     private final Resume[] storage = new Resume[STORAGE_LIMIT];
-    private int size; // число резюме
+    private int size;
 
     public void clear() {
         Arrays.fill(storage, 0, size, null);
@@ -27,24 +27,23 @@ public class ArrayStorage {
     }
 
     public void save(Resume r) {
-        if (size >= STORAGE_LIMIT) {
+        if (size == STORAGE_LIMIT) {
             System.out.println("Переполнение массива резюме");
+        } else if (getResumeIndex(r.getUuid()) != -1) {
+            System.out.println("Резюме " + r.getUuid() + " уже есть.");
         } else {
-            if (getResumeIndex(r.getUuid()) != -1) {
-                System.out.println("Резюме " + r.getUuid() + " уже есть.");
-            } else {
-                storage[size] = r;
-                size++;
-            }
+            storage[size] = r;
+            size++;
         }
     }
 
     public Resume get(String uuid) {
-        if (getResumeIndex(uuid) == -1) {
+        int index = getResumeIndex(uuid);
+        if (index == -1) {
             System.out.println("Резюме не существует");
             return null;
         } else {
-            return storage[getResumeIndex(uuid)];
+            return storage[index];
         }
     }
 
