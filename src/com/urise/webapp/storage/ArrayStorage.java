@@ -27,7 +27,7 @@ public class ArrayStorage {
     }
 
     public void save(Resume r) {
-        if (size == STORAGE_LIMIT) {
+        if (size >= STORAGE_LIMIT) {
             System.out.println("Переполнение массива резюме");
         } else if (getIndex(r.getUuid()) != -1) {
             System.out.println("Резюме " + r.getUuid() + " уже есть.");
