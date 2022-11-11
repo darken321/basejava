@@ -12,7 +12,6 @@ public interface Storage {
 
     void update(Resume r);
 
-
     void save(Resume r);
 
     Resume get(String uuid);
@@ -23,5 +22,6 @@ public interface Storage {
      * @return array, contains only Resumes in storage (without null)
      */
     Resume[] getAll();
+
     int size();
 }

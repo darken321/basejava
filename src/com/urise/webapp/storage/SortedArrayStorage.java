@@ -11,20 +11,26 @@ public class SortedArrayStorage extends AbstractArrayStorage {
         int index = getIndex(r.getUuid());
         if (size >= STORAGE_LIMIT) {
             System.out.println("Переполнение массива резюме");
-        } else if (index > 0) {
+        } else if (index >= 0) {
             System.out.println("Резюме " + r.getUuid() + " уже есть.");
         } else {
             if (-index - 1 < size) {
                 System.arraycopy(storage, -index - 1, storage, -index, size + index + 1);
             }
-            storage[-index - 1] = r; // size
+            storage[-index - 1] = r;
             size++;
         }
     }
 
-    @Override
     public void delete(String uuid) {
-
+        int index = getIndex(uuid);
+        if (index < 0) {
+            System.out.println("Резюме " + uuid + " не найдено.");
+        } else {
+            System.arraycopy(storage, index + 1, storage, index, size - index + 1);
+            storage[size - 1] = null;
+            size--;
+        }
     }
 
     @Override
