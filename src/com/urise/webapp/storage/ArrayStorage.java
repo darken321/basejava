@@ -8,10 +8,11 @@ import com.urise.webapp.model.Resume;
 public class ArrayStorage extends AbstractArrayStorage {
 
     public void save(Resume r) {
-        if (size >= STORAGE_LIMIT) {
-            System.out.println("Переполнение массива резюме");
-        } else if (getIndex(r.getUuid()) != -1) {
+        int index = getIndex(r.getUuid());
+        if (index >= 0) {
             System.out.println("Резюме " + r.getUuid() + " уже есть.");
+        } else if (size >= STORAGE_LIMIT) {
+            System.out.println("Переполнение массива резюме");
         } else {
             storage[size] = r;
             size++;
@@ -20,7 +21,7 @@ public class ArrayStorage extends AbstractArrayStorage {
 
     public void delete(String uuid) {
         int index = getIndex(uuid);
-        if (index == -1) {
+        if (index < 0) {
             System.out.println("Резюме " + uuid + " не найдено.");
         } else {
             storage[index] = storage[size - 1];
