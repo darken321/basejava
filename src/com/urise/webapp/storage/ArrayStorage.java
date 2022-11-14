@@ -9,7 +9,6 @@ public class ArrayStorage extends AbstractArrayStorage {
 
     protected void saveStorage(Resume r, int index) {
         storage[size] = r;
-        size++;
     }
 
     protected void deleteStorage(int index) {

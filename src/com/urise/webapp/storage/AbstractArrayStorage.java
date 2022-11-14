@@ -35,6 +35,7 @@ public abstract class AbstractArrayStorage implements Storage {
             System.out.println("Переполнение массива резюме");
         } else {
             saveStorage(r, index);
+            size++;
         }
     }
 
@@ -48,10 +49,6 @@ public abstract class AbstractArrayStorage implements Storage {
             size--;
         }
     }
-
-    abstract void deleteStorage(int index);
-
-    abstract void saveStorage(Resume r, int index);
 
     public int size() {
         return size;
@@ -70,6 +67,10 @@ public abstract class AbstractArrayStorage implements Storage {
     public Resume[] getAll() {
         return Arrays.copyOf(storage, size);
     }
+
+    protected abstract void deleteStorage(int index);
+
+    protected abstract void saveStorage(Resume r, int index);
 
     protected abstract int getIndex(String uuid);
 }
