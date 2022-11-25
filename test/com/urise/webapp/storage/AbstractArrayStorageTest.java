@@ -17,7 +17,7 @@ public abstract class AbstractArrayStorageTest {
     private final static Resume RESUME_1 = new Resume(UUID_1);
     private final static Resume RESUME_2 = new Resume(UUID_2);
     private final static Resume RESUME_3 = new Resume(UUID_3);
-    private final static Resume TEST_RESUME = new Resume(TEST_UUID);
+    private final static Resume RESUME_NOT_EXIST = new Resume(TEST_UUID);
 
 
     protected AbstractArrayStorageTest(Storage storage) {
@@ -47,14 +47,15 @@ public abstract class AbstractArrayStorageTest {
     @Test
     void updateNotExist() {
         Assertions.assertThrows(NotExistStorageException.class, () -> {
-            storage.update(TEST_RESUME);
+            storage.update(RESUME_NOT_EXIST);
         }, "update error");
     }
 
     @Test
     void update() {
-        storage.update(RESUME_2);
-        Assertions.assertSame(RESUME_2, storage.get(UUID_2));
+        Resume r = new Resume(UUID_2);
+        storage.update(r);
+        Assertions.assertSame(r, storage.get(UUID_2));
     }
 
     @Test
@@ -69,7 +70,7 @@ public abstract class AbstractArrayStorageTest {
         }
         assertSize(AbstractArrayStorage.STORAGE_LIMIT);
         Assertions.assertThrows(StorageException.class, () -> {
-            storage.save(TEST_RESUME);
+            storage.save(RESUME_NOT_EXIST);
         }, "save overflow error");
     }
 
@@ -82,8 +83,8 @@ public abstract class AbstractArrayStorageTest {
 
     @Test
     void save() {
-        storage.save(TEST_RESUME);
-        assertGet(TEST_RESUME);
+        storage.save(RESUME_NOT_EXIST);
+        assertGet(RESUME_NOT_EXIST);
         assertSize(4);
     }
 
@@ -119,10 +120,7 @@ public abstract class AbstractArrayStorageTest {
 
     @Test
     void getAll() {
-        Resume[] expected = new Resume[3];
-        expected[0] = RESUME_1;
-        expected[1] = RESUME_2;
-        expected[2] = RESUME_3;
+        Resume[] expected = new Resume[]{RESUME_1, RESUME_2, RESUME_3};
         Assertions.assertArrayEquals(expected, storage.getAll());
         assertSize(3);
     }
