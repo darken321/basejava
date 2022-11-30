@@ -13,11 +13,11 @@ public abstract class AbstractArrayStorageTest {
     private static final String UUID_1 = "uuid1";
     private static final String UUID_2 = "uuid2";
     private static final String UUID_3 = "uuid3";
-    private static final String TEST_UUID = "dummy";
+    protected static final String TEST_UUID = "dummy";
     private final static Resume RESUME_1 = new Resume(UUID_1);
     private final static Resume RESUME_2 = new Resume(UUID_2);
     private final static Resume RESUME_3 = new Resume(UUID_3);
-    private final static Resume RESUME_NOT_EXIST = new Resume(TEST_UUID);
+    protected final static Resume RESUME_NOT_EXIST = new Resume(TEST_UUID);
 
 
     protected AbstractArrayStorageTest(Storage storage) {
@@ -125,7 +125,7 @@ public abstract class AbstractArrayStorageTest {
         assertSize(3);
     }
 
-    private void assertSize(int size) {
+    protected void assertSize(int size) {
         Assertions.assertEquals(size, storage.size(), "Wrong size");
     }
 
