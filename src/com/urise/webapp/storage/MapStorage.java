@@ -9,7 +9,7 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected void updateResume(int Index, Resume r) {
+    protected void updateResume(int index, Resume r) {
     }
 
     @Override
@@ -35,7 +35,12 @@ public class MapStorage extends AbstractStorage {
         return null;
     }
 
-    protected int getIndex(String uuid) {
+    @Override
+    protected boolean isExist() {
+        return false;
+    }
+
+    protected Object getSearchKey(String uuid) {
         return 0;
     }
 }
