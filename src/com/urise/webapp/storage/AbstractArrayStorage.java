@@ -41,6 +41,10 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         return size;
     }
 
+    protected boolean isExist(Object searchKey) {
+        return ((int)searchKey >= 0);
+    }
+
     protected Resume getResume(Object index, String uuid) {
         return storage[(int)index];
     }
