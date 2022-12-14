@@ -3,7 +3,6 @@ package com.urise.webapp.storage;
 import com.urise.webapp.model.Resume;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 public class ListStorage extends AbstractStorage {
@@ -37,21 +36,9 @@ public class ListStorage extends AbstractStorage {
         return storage.toArray(new Resume[0]);
     }
 
-    @Override
-    public List<Resume> getAllSorted() {
-        List<Resume> storageCopy = new ArrayList<>(storage);
-        storageCopy.sort(new Comparator<Resume>() {
-            @Override
-            public int compare(Resume o1, Resume o2) {
-                int nameCompare = o1.getFullName().compareTo(o2.getFullName());
-                if (nameCompare == 0) {
-                    return o1.getUuid().compareTo(o2.getUuid());
-                } else return nameCompare;
-            }
-        });
-        return storageCopy;
+    protected List<Resume> getListCopy(){
+        return new ArrayList<>(storage);
     }
-
 
     protected Resume getResume(Object index, String uuid) {
         return storage.get((int) getSearchKey(uuid));
