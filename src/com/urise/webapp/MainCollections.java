@@ -70,7 +70,7 @@ public class MainCollections {
         System.out.println();
         if (LIST_STORAGE.size() == 0) {
             System.out.println("empty");
-        } else for (Resume r : LIST_STORAGE.getAll()) {
+        } else for (Resume r : LIST_STORAGE.getAllSorted()) {
             System.out.println(r);
         }
     }

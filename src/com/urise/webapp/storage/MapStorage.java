@@ -32,11 +32,6 @@ public class MapStorage extends AbstractStorage {
         return storage.size();
     }
 
-    @Override
-    public Resume[] getAll() {
-        return storage.values().toArray(new Resume[0]);
-    }
-
     protected List <Resume> getListCopy(){
         return new ArrayList<>(storage.values());
     }

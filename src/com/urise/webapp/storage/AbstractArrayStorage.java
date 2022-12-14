@@ -51,10 +51,6 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         return storage[(int) index];
     }
 
-        public Resume[] getAll() {
-        return Arrays.copyOf(storage, size);
-    }
-
     protected List<Resume> getListCopy(){
         return new ArrayList<>(List.of(Arrays.copyOf(storage, size)));
     }
