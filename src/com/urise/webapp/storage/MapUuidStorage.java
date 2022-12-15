@@ -4,7 +4,7 @@ import com.urise.webapp.model.Resume;
 
 import java.util.*;
 
-public class MapStorage extends AbstractStorage {
+public class MapUuidStorage extends AbstractStorage {
     protected Map<String,Resume> storage = new TreeMap<>();
 
     @Override
@@ -44,7 +44,7 @@ public class MapStorage extends AbstractStorage {
         return storage.containsKey((String) searchKey);
     }
 
-    protected Object getSearchKey(String uuid) {
-        return uuid;
+    protected Object getSearchKey(Resume r) {
+        return r.getUuid();
     }
 }

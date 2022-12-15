@@ -35,19 +35,19 @@ public class ListStorage extends AbstractStorage {
         return new ArrayList<>(storage);
     }
 
-    protected Resume getResume(Object index, String uuid) {
-        return storage.get((int) getSearchKey(uuid));
+    protected Resume getResume(Object index, String uuid) { //
+        return storage.get((int) getSearchKey(new Resume(uuid)));
     }
 
     protected boolean isExist(Object searchKey) {
         return ((int)searchKey >= 0);
     }
 
-    protected Object getSearchKey(String uuid) {
+    protected Object getSearchKey(Resume r) {
         Resume[] ar = new Resume[storage.size()];
         storage.toArray(ar);
         for (int i = 0; i < storage.size(); i++) {
-            if (ar[i].getUuid() == uuid) {
+            if (ar[i].getUuid() == r.getUuid()) {
                 return i;
             }
         }

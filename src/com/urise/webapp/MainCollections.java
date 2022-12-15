@@ -1,7 +1,7 @@
 package com.urise.webapp;
 
 import com.urise.webapp.model.Resume;
-import com.urise.webapp.storage.SortedArrayStorage;
+import com.urise.webapp.storage.MapNameStorage;
 import com.urise.webapp.storage.Storage;
 
 public class MainCollections {
@@ -19,10 +19,10 @@ public class MainCollections {
     private static final Resume RESUME_1 = new Resume(UUID_3, NAME1);
     private static final Resume RESUME_2 = new Resume(UUID_5, NAME2);
     private static final Resume RESUME_3 = new Resume(UUID_1, NAME3);
-    private static final Resume RESUME_4 = new Resume(UUID_2, NAME1);
-    private static final Resume RESUME_5 = new Resume(UUID_5, NAME4);
+    private static final Resume RESUME_4 = new Resume(UUID_2, NAME4);
+    private static final Resume RESUME_5 = new Resume(UUID_4, NAME4);
 
-    private final static Storage LIST_STORAGE = new SortedArrayStorage();
+    private final static Storage LIST_STORAGE = new MapNameStorage();
 
     public static void main(String[] args) {
 
@@ -37,25 +37,14 @@ public class MainCollections {
         System.out.println("\nsize " + LIST_STORAGE.size());
         printAll();
 
-        System.out.println("After sorting");
-        for (Resume r : LIST_STORAGE.getAllSorted()) {
-            System.out.println(r);
-        }
-        printAll();
-
         System.out.println("update Resume 5 " + RESUME_5);
         LIST_STORAGE.update(RESUME_5);
         printAll();
 
-        System.out.println("After sorting");
-        for (Resume r : LIST_STORAGE.getAllSorted()) {
-            System.out.println(r);
-        }
-
         System.out.println("get 1 2 3");
-        System.out.println(LIST_STORAGE.get(UUID_1));
-        System.out.println(LIST_STORAGE.get(UUID_2));
-        System.out.println(LIST_STORAGE.get(UUID_3));
+        System.out.println(LIST_STORAGE.get(NAME1));
+        System.out.println(LIST_STORAGE.get(NAME2));
+        System.out.println(LIST_STORAGE.get(NAME3));
         System.out.println("delete 1 2 3");
         LIST_STORAGE.delete(UUID_1);
         LIST_STORAGE.delete(UUID_2);
