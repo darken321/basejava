@@ -21,14 +21,14 @@ public abstract class AbstractStorage implements Storage {
     }
 
     @Override
-    public final void delete(String uuid) {
-        Object searchKey = getExistingSearchKey(new Resume(uuid));
-        deleteResume(searchKey, uuid);
+    public final void delete(String key) {
+        Object searchKey = getExistingSearchKey(new Resume(key, key));
+        deleteResume(searchKey, key);
     }
 
     @Override
-    public final Resume get(String key) {  // возвращает резюме по ключу
-        Object searchKey = getExistingSearchKey(new Resume(key));
+    public final Resume get(String key) {
+        Object searchKey = getExistingSearchKey(new Resume(key, key));
         return getResume(searchKey, key);
     }
 
@@ -48,7 +48,7 @@ public abstract class AbstractStorage implements Storage {
     private Object getNotExistingSearchKey(Resume r) {
         Object searchKey = getSearchKey(r);
         if (isExist(searchKey)) {
-            throw new ExistStorageException(r.getUuid());
+            throw new ExistStorageException(r.toString());
         }
         return searchKey;
     }
@@ -56,7 +56,7 @@ public abstract class AbstractStorage implements Storage {
     private Object getExistingSearchKey(Resume r) {
         Object searchKey = getSearchKey(r);
         if (!isExist(searchKey)) {
-            throw new NotExistStorageException(r.getUuid());
+            throw new NotExistStorageException(r.toString());
         }
         return searchKey;
     }
@@ -67,11 +67,11 @@ public abstract class AbstractStorage implements Storage {
 
     protected abstract void saveResume(Object searchKey, Resume r);
 
-    protected abstract void deleteResume(Object searchKey, String uuid);
+    protected abstract void deleteResume(Object searchKey, String key);
 
     protected abstract Object getSearchKey(Resume r);
 
-    protected abstract Resume getResume(Object searchKey, String uuid);
+    protected abstract Resume getResume(Object searchKey, String key);
 
     protected abstract boolean isExist(Object searchKey);
 

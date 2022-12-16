@@ -13,7 +13,6 @@ public class ListStorage extends AbstractStorage {
         storage.clear();
     }
 
-    @Override
     protected void updateResume(Object index, Resume r) {
         storage.set((int) index, r);
     }
@@ -35,7 +34,7 @@ public class ListStorage extends AbstractStorage {
         return new ArrayList<>(storage);
     }
 
-    protected Resume getResume(Object index, String uuid) { //
+    protected Resume getResume(Object index, String uuid) {
         return storage.get((int) getSearchKey(new Resume(uuid)));
     }
 

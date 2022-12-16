@@ -12,20 +12,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbstractArrayStorageTest {
-    protected final Storage storage;
-    private static final String UUID_1 = "uuid1";
-    private static final String UUID_2 = "uuid2";
-    private static final String UUID_3 = "uuid3";
+    final Storage storage;
+    static final String UUID_1 = "uuid1";
+    static final String UUID_2 = "uuid2";
+    static final String UUID_3 = "uuid3";
 
-    private static final String NAME_1 = "name1";
-    private static final String NAME_2 = "name2";
-    private static final String NAME_3 = "name3";
-    protected static final String TEST_UUID = "dummy";
+    static final String NAME_1 = "name1";
+    static final String NAME_2 = "name2";
+    static final String NAME_3 = "name3";
+    static final String TEST_UUID = "dummy";
 
-    private final static Resume RESUME_1 = new Resume(UUID_1, NAME_1);
-    private final static Resume RESUME_2 = new Resume(UUID_2, NAME_2);
-    private final static Resume RESUME_3 = new Resume(UUID_3, NAME_3);
-    protected final static Resume RESUME_NOT_EXIST = new Resume(TEST_UUID);
+    final static Resume RESUME_1 = new Resume(UUID_1, NAME_1);
+    final static Resume RESUME_2 = new Resume(UUID_2, NAME_2);
+    final static Resume RESUME_3 = new Resume(UUID_3, NAME_3);
+    final static Resume RESUME_NOT_EXIST = new Resume(TEST_UUID,TEST_UUID);
 
 
     protected AbstractArrayStorageTest(Storage storage) {
@@ -61,7 +61,7 @@ public abstract class AbstractArrayStorageTest {
 
     @Test
     void update() {
-        Resume r = new Resume(UUID_2);
+        Resume r = new Resume(UUID_2,NAME_3);
         storage.update(r);
         Assertions.assertSame(r, storage.get(UUID_2));
     }
@@ -132,7 +132,6 @@ public abstract class AbstractArrayStorageTest {
         expected.add(RESUME_1);
         expected.add(RESUME_2);
         expected.add(RESUME_3);
-        //Resume[] expected = new Resume[]{RESUME_1, RESUME_2, RESUME_3};
         Assertions.assertEquals(expected, storage.getAllSorted());
         assertSize(3);
     }

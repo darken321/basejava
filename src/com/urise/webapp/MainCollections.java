@@ -10,17 +10,17 @@ public class MainCollections {
     private static final String UUID_3 = "uuid3";
     private static final String UUID_4 = "uuid4";
     private static final String UUID_5 = "uuid5";
-    private static final String NAME1 = "Lena";
-    private static final String NAME2 = "Misha";
-    private static final String NAME3 = "Kolya";
-    private static final String NAME4 = "Ola";
+    private static final String NAME_1 = "Lena";
+    private static final String NAME_2 = "Misha";
+    private static final String NAME_3 = "Kolya";
+    private static final String NAME_4 = "Ola";
 
 
-    private static final Resume RESUME_1 = new Resume(UUID_3, NAME1);
-    private static final Resume RESUME_2 = new Resume(UUID_5, NAME2);
-    private static final Resume RESUME_3 = new Resume(UUID_1, NAME3);
-    private static final Resume RESUME_4 = new Resume(UUID_2, NAME4);
-    private static final Resume RESUME_5 = new Resume(UUID_4, NAME4);
+    private static final Resume RESUME_1 = new Resume(UUID_3, NAME_1);
+    private static final Resume RESUME_2 = new Resume(UUID_5, NAME_2);
+    private static final Resume RESUME_3 = new Resume(UUID_1, NAME_3);
+    private static final Resume RESUME_4 = new Resume(UUID_2, NAME_4);
+    private static final Resume RESUME_5 = new Resume(UUID_4, NAME_4);
 
     private final static Storage LIST_STORAGE = new MapNameStorage();
 
@@ -42,13 +42,13 @@ public class MainCollections {
         printAll();
 
         System.out.println("get 1 2 3");
-        System.out.println(LIST_STORAGE.get(NAME1));
-        System.out.println(LIST_STORAGE.get(NAME2));
-        System.out.println(LIST_STORAGE.get(NAME3));
+        System.out.println(LIST_STORAGE.get(NAME_1));
+        System.out.println(LIST_STORAGE.get(NAME_2));
+        System.out.println(LIST_STORAGE.get(NAME_3));
         System.out.println("delete 1 2 3");
-        LIST_STORAGE.delete(UUID_1);
-        LIST_STORAGE.delete(UUID_2);
-        LIST_STORAGE.delete(UUID_3);
+        LIST_STORAGE.delete(NAME_1);
+        LIST_STORAGE.delete(NAME_2);
+        LIST_STORAGE.delete(NAME_3);
         printAll();
 
         LIST_STORAGE.clear();

@@ -12,13 +12,13 @@ public class SortedArrayStorage extends AbstractArrayStorage {
         storage[-index - 1] = r;
     }
 
+    @Override
     protected void deleteResume(int index) {
         System.arraycopy(storage, index + 1, storage, index, size - index + 1);
     }
 
     @Override
     protected Object getSearchKey(Resume r) {
-        //Resume searchKey = new Resume(uuid);
         return Arrays.binarySearch(storage, 0, size, r);
     }
 }

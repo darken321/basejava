@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class MapNameStorage extends AbstractStorage {
-    protected Map<String,Resume> storage = new TreeMap<>();
+    protected Map<String, Resume> storage = new TreeMap<>();
 
     @Override
     public void clear() {
@@ -16,17 +16,17 @@ public class MapNameStorage extends AbstractStorage {
     }
 
     @Override
-    protected void updateResume(Object key, Resume r) { //key это ключ то есть имя
-        storage.put((String)key,r); // сохраняет резюме r по ключу key
+    protected void updateResume(Object key, Resume r) {
+        storage.put(r.getFullName(), r);
     }
 
     @Override
-    protected void saveResume(Object index, Resume r) {
-        storage.put(r.getFullName(),r);
+    protected void saveResume(Object key, Resume r) {
+        storage.put(r.getFullName(), r);
     }
 
     @Override
-    protected void deleteResume(Object index, String searchKey) {
+    protected void deleteResume(Object key, String searchKey) {
         storage.remove(searchKey);
     }
 
@@ -35,21 +35,23 @@ public class MapNameStorage extends AbstractStorage {
         return storage.size();
     }
 
-    protected List <Resume> getListCopy(){
+    @Override
+    protected List<Resume> getListCopy() {
         return new ArrayList<>(storage.values());
     }
 
     @Override
-    protected Resume getResume(Object index, String searchKey) {
+    protected Resume getResume(Object key, String searchKey) {
         return storage.get(searchKey);
     }
 
+    @Override
     protected boolean isExist(Object searchKey) {
-        return storage.containsKey((String) searchKey); // проверка есть ли searchKey в виде стринга - имя в storage
+        return storage.containsKey((String) searchKey);
     }
 
-    protected Object getSearchKey(Resume r) { // принимает резюме, возвращает searchKey - имя
-        return r.getFullName(); // переименовать searchKey на r
+    @Override
+    protected Object getSearchKey(Resume r) {
+        return r.getFullName();
     }
-    //на этом уровне searchKey это имя
 }
