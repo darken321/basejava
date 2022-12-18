@@ -1,7 +1,7 @@
 package com.urise.webapp;
 
 import com.urise.webapp.model.Resume;
-import com.urise.webapp.storage.MapUuidStorage;
+import com.urise.webapp.storage.MapResumeStorage;
 import com.urise.webapp.storage.Storage;
 
 public class MainCollections {
@@ -11,7 +11,7 @@ public class MainCollections {
     private static final Resume RESUME_4 = new Resume("uuid4", "Olya");
     private static final Resume RESUME_5 = new Resume("uuid2", "Olya");
 
-    private final static Storage LIST_STORAGE = new MapUuidStorage();
+    private final static Storage LIST_STORAGE = new MapResumeStorage();
 
     public static void main(String[] args) {
 

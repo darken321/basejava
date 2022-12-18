@@ -27,7 +27,7 @@ public class MapResumeStorage extends AbstractStorage {
 
     @Override
     protected void deleteResume(Object key, String searchKey) {
-        storage.remove((String) key);
+        storage.remove(((Resume) key).getUuid());
     }
 
     @Override
@@ -42,16 +42,16 @@ public class MapResumeStorage extends AbstractStorage {
 
     @Override
     protected Resume getResume(Object key, String searchKey) {
-        return storage.get((String) key);
+        return (Resume) key;
     }
 
     @Override
-    protected boolean isExist(Object searchKey) {
-        return storage.containsKey((String) searchKey);
+    protected boolean isExist(Object key) {
+        return key != null;
     }
 
     @Override
-    protected Object getSearchKey(String uuid) {
-        return uuid;
+    protected Resume getSearchKey(String uuid) {
+        return storage.get(uuid);
     }
 }
