@@ -14,16 +14,17 @@ public class Resume implements Comparable<Resume> {
     private String fullName;
 
     public Resume() {
-        this(UUID.randomUUID().toString());
+        this.uuid = UUID.randomUUID().toString();
+        this.fullName = UUID.randomUUID().toString();
     }
 
-    public Resume(String uuid) {
+    public Resume(String fullName) {
+        this(UUID.randomUUID().toString(), fullName);
+    }
+
+    public Resume(String uuid, String fullName) {
+        this.fullName = fullName;
         this.uuid = uuid;
-    }
-
-    public Resume(String uuid, String name) {
-        this(uuid);
-        this.fullName = name;
     }
 
     public String getUuid() {
@@ -38,9 +39,7 @@ public class Resume implements Comparable<Resume> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Resume resume = (Resume) o;
-
         return uuid.equals(resume.uuid);
     }
 

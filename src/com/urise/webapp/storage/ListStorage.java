@@ -35,7 +35,7 @@ public class ListStorage extends AbstractStorage {
     }
 
     protected Resume getResume(Object index, String uuid) {
-        return storage.get((int) getSearchKey(new Resume(uuid)));
+        return storage.get((int) index);
     }
 
     protected boolean isExist(Object searchKey) {
