@@ -1,17 +1,17 @@
 package com.urise.webapp;
 
 import com.urise.webapp.model.Resume;
-import com.urise.webapp.storage.ListStorage;
+import com.urise.webapp.storage.MapUuidStorage;
 import com.urise.webapp.storage.Storage;
 
 public class MainCollections {
-    private static final Resume RESUME_1 = new Resume("uuid3", "Lena");
-    private static final Resume RESUME_2 = new Resume("uuid5", "Misha");
+    private static final Resume RESUME_1 = new Resume("uuid1", "Lena");
+    private static final Resume RESUME_2 = new Resume("uuid3", "Misha");
     private static final Resume RESUME_3 = new Resume("uuid2", "Kolya");
     private static final Resume RESUME_4 = new Resume("uuid4", "Olya");
-    private static final Resume RESUME_5 = new Resume("uuid1", "Olya");
+    private static final Resume RESUME_5 = new Resume("uuid2", "Olya");
 
-    private final static Storage LIST_STORAGE = new ListStorage();
+    private final static Storage LIST_STORAGE = new MapUuidStorage();
 
     public static void main(String[] args) {
 
@@ -22,14 +22,13 @@ public class MainCollections {
         LIST_STORAGE.save(RESUME_2);
         LIST_STORAGE.save(RESUME_3);
         LIST_STORAGE.save(RESUME_4);
-        LIST_STORAGE.save(RESUME_5);
 
         System.out.println("\nsize " + LIST_STORAGE.size());
         printAll();
 
-//        System.out.println("update Resume 5 " + RESUME_5);
-//        LIST_STORAGE.update(RESUME_5);
-//        printAll();
+        System.out.println("update Resume 5 " + RESUME_5);
+        LIST_STORAGE.update(RESUME_5);
+        printAll();
 
         System.out.println("get 1 2 3");
         System.out.println(LIST_STORAGE.get("uuid1"));

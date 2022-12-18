@@ -11,25 +11,25 @@ public abstract class AbstractStorage implements Storage {
 
     @Override
     public final void update(Resume r) {
-        Object searchKey = getExistingSearchKey(r);
+        Object searchKey = getExistingSearchKey(r.getUuid());
         updateResume(searchKey, r);
     }
 
     @Override
     public final void save(Resume r) {
-        Object searchKey = getNotExistingSearchKey(r);
+        Object searchKey = getNotExistingSearchKey(r.getUuid());
         saveResume(searchKey, r);
     }
 
     @Override
     public final void delete(String key) {
-        Object searchKey = getExistingSearchKey(new Resume(key, key));
+        Object searchKey = getExistingSearchKey(key);
         deleteResume(searchKey, key);
     }
 
     @Override
     public final Resume get(String key) {
-        Object searchKey = getExistingSearchKey(new Resume(key, key));
+        Object searchKey = getExistingSearchKey(key);
         return getResume(searchKey, key);
     }
 
@@ -42,18 +42,18 @@ public abstract class AbstractStorage implements Storage {
         return storageCopy;
     }
 
-    private Object getNotExistingSearchKey(Resume r) {
-        Object searchKey = getSearchKey(r);
+    private Object getNotExistingSearchKey(String key) {
+        Object searchKey = getSearchKey(key);
         if (isExist(searchKey)) {
-            throw new ExistStorageException(r.toString());
+            throw new ExistStorageException(key);
         }
         return searchKey;
     }
 
-    private Object getExistingSearchKey(Resume r) {
-        Object searchKey = getSearchKey(r);
+    private Object getExistingSearchKey(String key) {
+        Object searchKey = getSearchKey(key);
         if (!isExist(searchKey)) {
-            throw new NotExistStorageException(r.toString());
+            throw new NotExistStorageException(key);
         }
         return searchKey;
     }
@@ -66,7 +66,7 @@ public abstract class AbstractStorage implements Storage {
 
     protected abstract void deleteResume(Object searchKey, String key);
 
-    protected abstract Object getSearchKey(Resume r);
+    protected abstract Object getSearchKey(String key);
 
     protected abstract Resume getResume(Object searchKey, String key);
 

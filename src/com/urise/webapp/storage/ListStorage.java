@@ -42,11 +42,11 @@ public class ListStorage extends AbstractStorage {
         return ((int)searchKey >= 0);
     }
 
-    protected Object getSearchKey(Resume r) {
+    protected Object getSearchKey(String uuid) {
         Resume[] ar = new Resume[storage.size()];
         storage.toArray(ar);
         for (int i = 0; i < storage.size(); i++) {
-            if (ar[i].getUuid() == r.getUuid()) {
+            if (ar[i].getUuid() == uuid) {
                 return i;
             }
         }

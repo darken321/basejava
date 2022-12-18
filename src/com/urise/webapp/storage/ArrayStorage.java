@@ -21,9 +21,9 @@ public class ArrayStorage extends AbstractArrayStorage {
      * @return array, contains only Resumes in storage (without null)
      */
     @Override
-    protected Object getSearchKey(Resume r) {
+    protected Object getSearchKey(String uuid) {
         for (int i = 0; i < size; i++) {
-            if (storage[i].getUuid().equals(r.getUuid())) {
+            if (storage[i].getUuid().equals(uuid)) {
                 return i;
             }
         }

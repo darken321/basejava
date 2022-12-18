@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class MapNameStorage extends AbstractStorage {
+public class MapResumeStorage extends AbstractStorage {
     protected Map<String, Resume> storage = new TreeMap<>();
 
     @Override
@@ -17,17 +17,17 @@ public class MapNameStorage extends AbstractStorage {
 
     @Override
     protected void updateResume(Object key, Resume r) {
-        storage.put(r.getFullName(), r);
+        storage.put(r.getUuid(), r);
     }
 
     @Override
     protected void saveResume(Object key, Resume r) {
-        storage.put(r.getFullName(), r);
+        storage.put(r.getUuid(), r);
     }
 
     @Override
     protected void deleteResume(Object key, String searchKey) {
-        storage.remove(searchKey);
+        storage.remove((String) key);
     }
 
     @Override
@@ -42,7 +42,7 @@ public class MapNameStorage extends AbstractStorage {
 
     @Override
     protected Resume getResume(Object key, String searchKey) {
-        return storage.get(searchKey);
+        return storage.get((String) key);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class MapNameStorage extends AbstractStorage {
     }
 
     @Override
-    protected Object getSearchKey(Resume r) {
-        return r.getFullName();
+    protected Object getSearchKey(String uuid) {
+        return uuid;
     }
 }

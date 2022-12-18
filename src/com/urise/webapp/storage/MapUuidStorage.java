@@ -24,7 +24,7 @@ public class MapUuidStorage extends AbstractStorage {
 
     @Override
     protected void deleteResume(Object key, String searchKey) {
-        storage.remove(searchKey);
+        storage.remove((String) key);
     }
 
     @Override
@@ -39,7 +39,7 @@ public class MapUuidStorage extends AbstractStorage {
 
     @Override
     protected Resume getResume(Object key, String searchKey) {
-        return storage.get(searchKey);
+        return storage.get((String) key);
     }
 
     @Override
@@ -48,7 +48,7 @@ public class MapUuidStorage extends AbstractStorage {
     }
 
     @Override
-    protected Object getSearchKey(Resume r) {
-        return r.getUuid();
+    protected Object getSearchKey(String uuid) {
+        return uuid;
     }
 }

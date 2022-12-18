@@ -2,7 +2,6 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.exception.ExistStorageException;
 import com.urise.webapp.exception.NotExistStorageException;
-import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -64,22 +63,6 @@ public abstract class AbstractArrayStorageTest {
         Resume r = new Resume(UUID_2,NAME_3);
         storage.update(r);
         Assertions.assertSame(r, storage.get(UUID_2));
-    }
-
-    @Test
-    void saveOverflow() {
-        storage.clear();
-        try {
-            for (int i = 0; i < AbstractArrayStorage.STORAGE_LIMIT; i++) {
-                storage.save(new Resume(TEST_UUID + (i + 1)));
-            }
-        } catch (Exception ArrayIndexOutOfBoundsException) {
-            Assertions.fail("Unexpected array overflow");
-        }
-        assertSize(AbstractArrayStorage.STORAGE_LIMIT);
-        Assertions.assertThrows(StorageException.class, () -> {
-            storage.save(RESUME_NOT_EXIST);
-        }, "save overflow error");
     }
 
     @Test
