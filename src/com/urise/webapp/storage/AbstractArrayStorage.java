@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Array based storage for Resumes
  */
-public abstract class AbstractArrayStorage extends AbstractStorage {
+public abstract class AbstractArrayStorage extends AbstractStorage <Integer>{
     protected static final int STORAGE_LIMIT = 10000;
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
@@ -20,21 +20,21 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         size = 0;
     }
 
-    protected void updateResume(Object index, Resume r) {
-        storage[(int) index] = r;
+    protected void updateResume(Integer index, Resume r) {
+        storage[index] = r;
     }
 
-    protected void saveResume(Object index, Resume r) {
+    protected void saveResume(Integer index, Resume r) {
         if (size >= STORAGE_LIMIT) {
             throw new StorageException("Storage overflow", r.getUuid());
         } else {
-            saveResume(r, (int) index);
+            doSave(r, index);
             size++;
         }
     }
 
-    protected void deleteResume(Object index, String uuid) {
-        deleteResume((int) index);
+    protected void deleteResume(Integer index) {
+        doDelete(index);
         storage[size - 1] = null;
         size--;
     }
@@ -43,19 +43,19 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         return size;
     }
 
-    protected boolean isExist(Object searchKey) {
-        return ((int) searchKey >= 0);
+    protected boolean isExist(Integer searchKey) {
+        return (searchKey >= 0);
     }
 
-    protected Resume getResume(Object index, String uuid) {
-        return storage[(int) index];
+    protected Resume getResume(Integer index) {
+        return storage[index];
     }
 
     protected List<Resume> getListCopy() {
         return new ArrayList<>(List.of(Arrays.copyOf(storage, size)));
     }
 
-    protected abstract void saveResume(Resume r, int index);
+    protected abstract void doSave(Resume r, int index);
 
-    protected abstract void deleteResume(int index);
+    protected abstract void doDelete(Integer index);
 }

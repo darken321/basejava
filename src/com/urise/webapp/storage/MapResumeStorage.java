@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class MapResumeStorage extends AbstractStorage {
+public class MapResumeStorage extends AbstractStorage <Resume> {
     protected Map<String, Resume> storage = new TreeMap<>();
 
     @Override
@@ -16,18 +16,18 @@ public class MapResumeStorage extends AbstractStorage {
     }
 
     @Override
-    protected void updateResume(Object key, Resume r) {
+    protected void updateResume(Resume key, Resume r) {
         storage.put(r.getUuid(), r);
     }
 
     @Override
-    protected void saveResume(Object key, Resume r) {
+    protected void saveResume(Resume key, Resume r) {
         storage.put(r.getUuid(), r);
     }
 
     @Override
-    protected void deleteResume(Object key, String searchKey) {
-        storage.remove(((Resume) key).getUuid());
+    protected void deleteResume(Resume key) {
+        storage.remove(key.getUuid());
     }
 
     @Override
@@ -41,12 +41,12 @@ public class MapResumeStorage extends AbstractStorage {
     }
 
     @Override
-    protected Resume getResume(Object key, String searchKey) {
-        return (Resume) key;
+    protected Resume getResume(Resume key) {
+        return key;
     }
 
     @Override
-    protected boolean isExist(Object key) {
+    protected boolean isExist(Resume key) {
         return key != null;
     }
 
