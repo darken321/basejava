@@ -1,16 +1,16 @@
 package com.urise.webapp.model;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class OrganizationSection extends AbstractSection {
-    private final ArrayList<Organization> organizations;
+    private final List<Organization> organizations;
 
-    public OrganizationSection(ArrayList<Organization> organizations) {
+    public OrganizationSection(List<Organization> organizations) {
         this.organizations = organizations;
     }
 
-    public ArrayList<Organization> getOrganizations() {
+    public List<Organization> getOrganizations() {
         return organizations;
     }
 
@@ -20,7 +20,7 @@ public class OrganizationSection extends AbstractSection {
             System.out.println(cs.getName());
             System.out.println(cs.getWebsite());
             for (Period p : cs.getPeriod()) {
-                System.out.println(p.getStartDate() + " - " + p.getStopDate());
+                System.out.println(p.getStartDate() + " - " + p.getEndDate());
                 System.out.println(p.getTitle());
                 System.out.println(p.getDescription());
             }

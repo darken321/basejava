@@ -3,7 +3,7 @@ package com.urise.webapp.model;
 import java.util.Objects;
 
 public class TextSection extends AbstractSection {
-    public String text;
+    public final String text;
 
     public String getTextSection() {
         return text;

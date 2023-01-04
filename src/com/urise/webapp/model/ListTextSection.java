@@ -1,17 +1,17 @@
 package com.urise.webapp.model;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class ListTextSection extends AbstractSection {
-    private ArrayList<String> list;
+    private final List<String> list;
 
-    public ArrayList<String> getList() {
-        return list;
+    public ListTextSection(List<String> list) {
+        this.list = list;
     }
 
-    public void setList(ArrayList<String> list) {
-        this.list = list;
+    public List<String> getList() {
+        return list;
     }
 
     @Override
