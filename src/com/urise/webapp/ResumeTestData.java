@@ -5,11 +5,30 @@ import com.urise.webapp.model.*;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.Set;
 
 public class ResumeTestData {
 
     public static void main(String[] args) {
-        Resume resume = new Resume("uuid1", "Григорий Кислин");
+        Resume resume = ResumeTestData.fillData("uuid1", "Григорий Кислин");
+
+        System.out.println("\n" + resume.getUuid() + " " + resume.getFullName());
+        for (Map.Entry<ContactType, String> c : resume.getContacts().entrySet()) {
+            System.out.print(c.getKey().getTitle() + " ");
+            System.out.println(c.getValue());
+        }
+
+        Set<Map.Entry<SectionType, AbstractSection>> entries = resume.getSections().entrySet();
+        for (Map.Entry<SectionType, AbstractSection> c : resume.getSections().entrySet()) {
+            System.out.println("\n    " + c.getKey().getTitle());
+            c.getValue().printAll();
+        }
+    }
+
+    public static Resume fillData(String uuid, String fullName) {
+
+        Resume resume = new Resume(uuid, fullName);
+
         EnumMap<ContactType, String> contact = new EnumMap<>(ContactType.class);
         contact.put(ContactType.PHONE, "+7(921) 855-0482");
         contact.put(ContactType.SKYPE, "skype:grigory.kislin");
@@ -19,12 +38,6 @@ public class ResumeTestData {
         contact.put(ContactType.STACKOVERFLOW, "https://stackoverflow.com/users/548473");
         contact.put(ContactType.HOMEPAGE, "http://gkislin.ru/");
         resume.setContacts(contact);
-
-        System.out.println("\n" + resume.getUuid() + " " + resume.getFullName());
-        for (Map.Entry<ContactType, String> c : resume.getContacts().entrySet()) {
-            System.out.print(c.getKey().getTitle() + " ");
-            System.out.println(c.getValue());
-        }
 
         EnumMap<SectionType, AbstractSection> position = new EnumMap<>(SectionType.class);
 
@@ -63,41 +76,36 @@ public class ResumeTestData {
         ListTextSection qualifications = new ListTextSection(stringsArray4);
         position.put(SectionType.QUALIFICATIONS, qualifications);
 
-
         ArrayList<Period> p5 = new ArrayList<>();
         p5.add(new Period("10/2013", "Сейчас", "Автор проекта.", "Создание, организация и проведение Java онлайн проектов и стажировок."));
         ArrayList<Organization> experience = new ArrayList<>();
-        experience.add(new Organization("Java Online Projects","http://javaops.ru/", p5));
+        experience.add(new Organization("Java Online Projects", "http://javaops.ru/", p5));
 
         ArrayList<Period> p6 = new ArrayList<>();
-        p6.add(new Period("10/2014", "01/2016", "Старший разработчик (backend)" ,"Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO."));
+        p6.add(new Period("10/2014", "01/2016", "Старший разработчик (backend)", "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO."));
         experience.add(new Organization("Wrike", "https://www.wrike.com/", p6));
 
         OrganizationSection org1 = new OrganizationSection(experience);
         position.put(SectionType.EXPERIENCE, org1);
 
-
         ArrayList<Period> p7 = new ArrayList<>();
         p7.add(new Period("03/2013", "05/2013", "'Functional Programming Principles in Scala' by Martin Odersky", ""));
         ArrayList<Organization> education = new ArrayList<>();
-        education.add(new Organization("Coursera","https://www.coursera.org/course/progfun", p7));
+        education.add(new Organization("Coursera", "https://www.coursera.org/course/progfun", p7));
 
         ArrayList<Period> p8 = new ArrayList<>();
-        p8.add(new Period("03/2011", "04/2011", "Курс 'Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.'" ,""));
+        p8.add(new Period("03/2011", "04/2011", "Курс 'Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.'", ""));
         education.add(new Organization("Luxoft", "http://www.luxoft-training.ru/training/catalog/course.html?ID=22366", p8));
 
         ArrayList<Period> p9 = new ArrayList<>();
-        p9.add(new Period("09/1993", "07/1996", "Аспирантура (программист С, С++)" ,""));
-        p9.add(new Period("09/1987", "07/1993", "Инженер (программист Fortran, C)" ,""));
+        p9.add(new Period("09/1993", "07/1996", "Аспирантура (программист С, С++)", ""));
+        p9.add(new Period("09/1987", "07/1993", "Инженер (программист Fortran, C)", ""));
         education.add(new Organization("Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики", "http://www.ifmo.ru/", p9));
 
         OrganizationSection org2 = new OrganizationSection(education);
         position.put(SectionType.EDUCATION, org2);
 
         resume.setSections(position);
-        for (Map.Entry<SectionType, AbstractSection> c : resume.getSections().entrySet()) {
-            System.out.println("\n    " + c.getKey().getTitle());
-            c.getValue().printAll();
-        }
+        return resume;
     }
 }

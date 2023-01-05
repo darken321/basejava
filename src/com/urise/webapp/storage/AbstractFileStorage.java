@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Objects;
 
 public abstract class AbstractFileStorage extends AbstractStorage<File> {
-    private File directory;
+    private final File directory;
 
     protected AbstractFileStorage(File directory) {
         Objects.requireNonNull(directory, "directory must not be null");
@@ -25,9 +25,12 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     protected List<Resume> getListCopy() {
-        // читает все файлы, используя doRead
+        File[] dir = directory.listFiles();
+        if (dir == null) {
+            throw new StorageException("Directory empty", directory.getName());
+        }
         List<Resume> list = new ArrayList<>();
-        for (File f : directory.listFiles()) {
+        for (File f : dir) {
             list.add(doRead(f));
         }
         return list;
@@ -41,23 +44,24 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     protected void saveResume(File file, Resume r) {
         try {
-            file.createNewFile();
+            if (!file.createNewFile()) {
+                throw new StorageException("Cant create file", file.getName());
+            }
             doWrite(r, file);
         } catch (IOException e) {
             throw new StorageException("IO error", file.getName(), e);
         }
     }
 
-    protected abstract void doWrite(Resume r, File file);
+    protected abstract void doWrite(Resume r, File file) throws StorageException;
 
-    protected abstract void doDelete(File file);
-
-    protected abstract Resume doRead(File file);
+    protected abstract Resume doRead(File file) throws StorageException;
 
     @Override
     protected void deleteResume(File file) {
-        // удаляет файл
-        doDelete(file);
+        if (!file.delete()) {
+            throw new StorageException("Can't delete file", file.getName());
+        }
     }
 
     @Override
@@ -77,13 +81,21 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     public void clear() {
-        for (File f : directory.listFiles()) {
-            f.delete();
+        File[] dir = directory.listFiles();
+        if (dir == null) {
+            throw new StorageException("Directory empty", directory.getName());
+        }
+        for (File f : dir) {
+            deleteResume(f);
         }
     }
 
     @Override
     public int size() {
-        return directory.listFiles().length;
+        File[] dir = directory.listFiles();
+        if (dir == null) {
+            throw new StorageException("Directory empty", directory.getName());
+        }
+        return dir.length;
     }
 }
