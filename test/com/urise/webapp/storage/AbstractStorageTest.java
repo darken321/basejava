@@ -8,10 +8,16 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbstractStorageTest {
+
+//    protected final static File STORAGE_DIR =
+//            new File("E:\\java\\Projects\\BaseJava\\basejava\\test\\com\\urise\\webapp\\storage");
+    protected final static File STORAGE_DIR =
+            new File("E:\\java\\Projects\\BaseJava\\HW\\src\\main\\java\\org\\example");
     final Storage storage;
     static final String UUID_1 = "uuid1";
     static final String UUID_2 = "uuid2";

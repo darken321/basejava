@@ -2,6 +2,7 @@ package com.urise.webapp.model;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Serializable;
 import java.util.EnumMap;
 import java.util.Objects;
 import java.util.UUID;
@@ -9,16 +10,18 @@ import java.util.UUID;
 /**
  * Initial resume class
  */
-public class Resume implements Comparable<Resume> {
+public class Resume implements Comparable<Resume>, Serializable {
 
     // Unique identifier
     private final String uuid;
     private final String fullName;
     private EnumMap<ContactType, String> contacts;
     private EnumMap<SectionType, AbstractSection> sections;
+
     public void setContacts(EnumMap<ContactType, String> contacts) {
         this.contacts = contacts;
     }
+
     public EnumMap<ContactType, String> getContacts() {
         return contacts;
     }
@@ -26,6 +29,7 @@ public class Resume implements Comparable<Resume> {
     public void setSections(EnumMap<SectionType, AbstractSection> sections) {
         this.sections = sections;
     }
+
     public EnumMap<SectionType, AbstractSection> getSections() {
         return sections;
     }
