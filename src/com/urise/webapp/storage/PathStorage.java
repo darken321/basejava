@@ -2,13 +2,14 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
+import com.urise.webapp.storage.strategy.StreamStrategy;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class PathStorage extends AbstractStorage<Path> {
@@ -32,12 +33,7 @@ public class PathStorage extends AbstractStorage<Path> {
         } catch (IOException e) {
             throw new StorageException("IO error", null,e);
         }
-        List<Path> list = dir.toList();
-        List<Resume> result = new ArrayList<>();
-        for (Path p: list){
-            result.add(getResume(p));
-        }
-        return result;
+        return dir.map(this::getResume).collect(Collectors.toList());
     }
 
     @Override
@@ -52,13 +48,11 @@ public class PathStorage extends AbstractStorage<Path> {
     @Override
     protected void saveResume(Path path, Resume r) {
         try {
-            if (!path.toFile().createNewFile()) {
-                throw new StorageException("Cant create file ", path.toFile().getName());
-            }
-            streamStrategy.doWrite(r, new BufferedOutputStream(new FileOutputStream(path.toFile())));
+            Files.createFile(path);
         } catch (IOException e) {
-            throw new StorageException("IO error ", directory.toFile().getName(), e);
+            throw new StorageException("Can't create file ", path.getFileName().toString(), e);
         }
+        updateResume(path,r);
     }
 
     @Override
@@ -98,10 +92,10 @@ public class PathStorage extends AbstractStorage<Path> {
 
     @Override
     public int size() {
-        File[] dir = directory.toFile().listFiles();
-        if (dir == null) {
+        try  {
+            return (int) Files.list(directory).count();
+        } catch (IOException e) {
             throw new StorageException("IO error ", directory.toFile().getName());
         }
-        return dir.length;
     }
 }
