@@ -27,13 +27,7 @@ public class PathStorage extends AbstractStorage<Path> {
 
     @Override
     protected List<Resume> getListCopy() {
-        Stream<Path> dir;
-        try {
-            dir = Files.list(directory);
-        } catch (IOException e) {
-            throw new StorageException("IO error", null,e);
-        }
-        return dir.map(this::getResume).collect(Collectors.toList());
+        return getListFiles().map(this::getResume).collect(Collectors.toList());
     }
 
     @Override
@@ -52,7 +46,7 @@ public class PathStorage extends AbstractStorage<Path> {
         } catch (IOException e) {
             throw new StorageException("Can't create file ", path.getFileName().toString(), e);
         }
-        updateResume(path,r);
+        updateResume(path, r);
     }
 
     @Override
@@ -83,17 +77,17 @@ public class PathStorage extends AbstractStorage<Path> {
 
     @Override
     public void clear() {
-        try {
-            Files.list(directory).forEach(this::deleteResume);
-        } catch (IOException e) {
-            throw new StorageException("Path delete error", directory.toFile().getName());
-        }
+        getListFiles().forEach(this::deleteResume);
     }
 
     @Override
     public int size() {
-        try  {
-            return (int) Files.list(directory).count();
+        return (int) getListFiles().count();
+    }
+
+    private Stream<Path> getListFiles(){
+        try {
+            return Files.list(directory);
         } catch (IOException e) {
             throw new StorageException("IO error ", directory.toFile().getName());
         }

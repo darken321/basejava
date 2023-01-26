@@ -2,6 +2,7 @@ package com.urise.webapp.model;
 
 import org.jetbrains.annotations.NotNull;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.EnumMap;
@@ -11,6 +12,8 @@ import java.util.UUID;
 /**
  * Initial resume class
  */
+
+@XmlRootElement
 public class Resume implements Comparable<Resume>, Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
