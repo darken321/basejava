@@ -16,7 +16,8 @@ public class XmlStreamSerializer implements StreamStrategy{
                 OrganizationSection.class,
                 TextSection.class,
                 ListTextSection.class,
-                Period.class);
+                Period.class
+        );
     }
 
     @Override
