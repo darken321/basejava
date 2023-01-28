@@ -24,8 +24,8 @@ public class Resume implements Comparable<Resume>, Serializable {
     // Unique identifier
     private String uuid;
     private String fullName;
-    private EnumMap<ContactType, String> contacts;
-    private EnumMap<SectionType, AbstractSection> sections;
+    private EnumMap<ContactType, String> contacts = new EnumMap<>(ContactType.class);
+    private EnumMap<SectionType, AbstractSection> sections = new EnumMap<>(SectionType.class);
 
     public Resume() {
     }
