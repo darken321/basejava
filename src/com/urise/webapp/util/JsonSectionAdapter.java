@@ -10,25 +10,23 @@ public class JsonSectionAdapter<T> implements JsonSerializer<T>, JsonDeserialize
 
     @Override
     public T deserialize(JsonElement json, Type type, JsonDeserializationContext context) throws JsonParseException {
-//        JsonObject jsonObject = json.getAsJsonObject();
-//        JsonPrimitive prim = (JsonPrimitive) jsonObject.get(CLASSNAME);
-//        String className = prim.getAsString();
-//
-//        try {
-//            Class clazz = Class.forName(className);
-//            return context.deserialize(jsonObject.get(INSTANCE), clazz);
-//        } catch (ClassNotFoundException e) {
-//            throw new JsonParseException(e.getMessage());
-//        }
-        return null;
+        JsonObject jsonObject = json.getAsJsonObject();
+        JsonPrimitive prim = (JsonPrimitive) jsonObject.get(CLASSNAME);
+        String className = prim.getAsString();
+
+        try {
+            Class clazz = Class.forName(className);
+            return context.deserialize(jsonObject.get(INSTANCE), clazz);
+        } catch (ClassNotFoundException e) {
+            throw new JsonParseException(e.getMessage());
+        }
     }
     @Override
     public JsonElement serialize(T section, Type type, JsonSerializationContext context) {
-//        JsonObject retValue = new JsonObject();
-//        retValue.addProperty(CLASSNAME, section.getClass().getName());
-//        JsonElement elem = context.serialize(section);
-//        retValue.add(INSTANCE, elem);
-//        return retValue;
-        return null;
-    }
+        JsonObject retValue = new JsonObject();
+        retValue.addProperty(CLASSNAME, section.getClass().getName());
+        JsonElement elem = context.serialize(section);
+        retValue.add(INSTANCE, elem);
+        return retValue;
+   }
 }

@@ -18,8 +18,8 @@ public class ResumeTestData {
             System.out.println(c.getValue());
         }
 
-        Set<Map.Entry<SectionType, AbstractSection>> entries = resume.getSections().entrySet();
-        for (Map.Entry<SectionType, AbstractSection> c : resume.getSections().entrySet()) {
+        Set<Map.Entry<SectionType, Section>> entries = resume.getSections().entrySet();
+        for (Map.Entry<SectionType, Section> c : resume.getSections().entrySet()) {
             System.out.println("\n    " + c.getKey().getTitle());
             c.getValue().printAll();
         }
@@ -39,7 +39,7 @@ public class ResumeTestData {
         contact.put(ContactType.HOMEPAGE, "http://gkislin.ru/");
         resume.setContacts(contact);
 
-        EnumMap<SectionType, AbstractSection> position = new EnumMap<>(SectionType.class);
+        EnumMap<SectionType, Section> position = new EnumMap<>(SectionType.class);
 
         TextSection objective = new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям");
         position.put(SectionType.OBJECTIVE, objective);

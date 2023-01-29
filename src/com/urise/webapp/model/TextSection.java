@@ -6,7 +6,7 @@ import java.io.Serial;
 import java.util.Objects;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class TextSection extends AbstractSection {
+public class TextSection extends Section {
     @Serial
     private static final long serialVersionUID = 1L;
     public String text;
