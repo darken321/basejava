@@ -9,12 +9,17 @@ import java.util.Objects;
 public class TextSection extends Section {
     @Serial
     private static final long serialVersionUID = 1L;
-    public String text;
+    private String text;
 
     public TextSection() {
     }
 
     public String getTextSection() {
+        return text;
+    }
+
+    @Override
+    public String getStringSection() {
         return text;
     }
 

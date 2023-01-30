@@ -37,6 +37,11 @@ public class OrganizationSection extends Section {
     }
 
     @Override
+    public String getStringSection() {
+        return null;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

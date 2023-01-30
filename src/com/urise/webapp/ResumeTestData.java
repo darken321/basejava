@@ -1,9 +1,6 @@
 package com.urise.webapp;
 
-import com.urise.webapp.model.ContactType;
-import com.urise.webapp.model.Resume;
-import com.urise.webapp.model.Section;
-import com.urise.webapp.model.SectionType;
+import com.urise.webapp.model.*;
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -41,7 +38,7 @@ public class ResumeTestData {
         contact.put(ContactType.HOMEPAGE, "http://gkislin.ru/");
         resume.setContacts(contact);
 
-        /*EnumMap<SectionType, Section> position = new EnumMap<>(SectionType.class);
+        EnumMap<SectionType, Section> position = new EnumMap<>(SectionType.class);
 
         TextSection objective = new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям");
         position.put(SectionType.OBJECTIVE, objective);
@@ -49,7 +46,7 @@ public class ResumeTestData {
         TextSection personal = new TextSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры.");
         position.put(SectionType.PERSONAL, personal);
 
-        ArrayList<String> stringsArray3 = new ArrayList<>();
+        /*ArrayList<String> stringsArray3 = new ArrayList<>();
         stringsArray3.add("Организация команды и успешная реализация Java проектов для сторонних заказчиков: приложения автопарк на стеке Spring Cloud/микросервисы, система мониторинга показателей спортсменов на Spring Boot, участие в проекте МЭШ на Play-2, многомодульный Spring Boot + Vaadin проект для комплексных DIY смет");
         stringsArray3.add("С 2013 года: разработка проектов \"Разработка Web приложения\",\"Java Enterprise\", \"Многомодульный maven. Многопоточность. XML (JAXB/StAX). Веб сервисы (JAX-RS/SOAP). Удаленное взаимодействие (JMS/AKKA)\". Организация онлайн стажировок и ведение проектов. Более 3500 выпускников.");
         stringsArray3.add("Реализация двухфакторной аутентификации для онлайн платформы управления проектами Wrike. Интеграция с Twilio, DuoSecurity, Google Authenticator, Jira, Zendesk.");
@@ -106,9 +103,9 @@ public class ResumeTestData {
 
         OrganizationSection org2 = new OrganizationSection(education);
         position.put(SectionType.EDUCATION, org2);
-
-        resume.setSections(position);
         */
+        resume.setSections(position);
+
         return resume;
     }
 }

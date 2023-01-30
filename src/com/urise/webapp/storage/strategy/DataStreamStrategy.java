@@ -1,7 +1,6 @@
 package com.urise.webapp.storage.strategy;
 
-import com.urise.webapp.model.ContactType;
-import com.urise.webapp.model.Resume;
+import com.urise.webapp.model.*;
 
 import java.io.*;
 import java.util.EnumMap;
@@ -20,6 +19,18 @@ public class DataStreamStrategy implements StreamStrategy {
                 dos.writeUTF(entry.getKey().name());
                 dos.writeUTF(entry.getValue());
             }
+            //считал все (2) секции в EnumMap
+            Map<SectionType, Section> section = r.getSections();
+            //записал две секции в файл
+
+            Section sectionObjective = section.get(SectionType.OBJECTIVE);
+            dos.writeUTF(sectionObjective.getStringSection());
+
+            Section sectionPersonal = section.get(SectionType.PERSONAL);
+            dos.writeUTF(sectionPersonal.getStringSection());
+//            dos.writeUTF(section.get(SectionType.OBJECTIVE).getStringSection());
+//            dos.writeUTF(section.get(SectionType.PERSONAL).getStringSection());
+
             //TODO implements sections
         }
     }
@@ -36,6 +47,16 @@ public class DataStreamStrategy implements StreamStrategy {
                 contacts.put(ContactType.valueOf(dis.readUTF()), dis.readUTF());
             }
             resume.setContacts(contacts);
+            //завел новую мапу для секций
+            EnumMap<SectionType, Section> section = new EnumMap<>(SectionType.class);
+
+            //прочитал две секции и записал их в файл
+            section.put(SectionType.OBJECTIVE, new TextSection(dis.readUTF()));
+            section.put(SectionType.PERSONAL, new TextSection(dis.readUTF()));
+
+            //добавил все секции в резюме
+            resume.setSections(section);
+
             return resume;
             //TODO implements sections
         }
