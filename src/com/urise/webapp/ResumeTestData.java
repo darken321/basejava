@@ -1,8 +1,10 @@
 package com.urise.webapp;
 
-import com.urise.webapp.model.*;
+import com.urise.webapp.model.ContactType;
+import com.urise.webapp.model.Resume;
+import com.urise.webapp.model.Section;
+import com.urise.webapp.model.SectionType;
 
-import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.Set;
@@ -39,7 +41,7 @@ public class ResumeTestData {
         contact.put(ContactType.HOMEPAGE, "http://gkislin.ru/");
         resume.setContacts(contact);
 
-        EnumMap<SectionType, Section> position = new EnumMap<>(SectionType.class);
+        /*EnumMap<SectionType, Section> position = new EnumMap<>(SectionType.class);
 
         TextSection objective = new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям");
         position.put(SectionType.OBJECTIVE, objective);
@@ -106,6 +108,7 @@ public class ResumeTestData {
         position.put(SectionType.EDUCATION, org2);
 
         resume.setSections(position);
+        */
         return resume;
     }
 }
