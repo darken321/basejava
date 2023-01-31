@@ -13,13 +13,7 @@ public class TextSection extends Section {
 
     public TextSection() {
     }
-
     public String getTextSection() {
-        return text;
-    }
-
-    @Override
-    public String getStringSection() {
         return text;
     }
 

@@ -31,7 +31,7 @@ public class Resume implements Comparable<Resume>, Serializable {
     public Resume() {
     }
 
-    public void setContacts(EnumMap<ContactType, String> contacts) {
+    public void setContacts(Map<ContactType, String> contacts) {
         this.contacts = contacts;
     }
 
@@ -39,7 +39,7 @@ public class Resume implements Comparable<Resume>, Serializable {
         return contacts;
     }
 
-    public void setSections(EnumMap<SectionType, Section> sections) {
+    public void setSections(Map<SectionType, Section> sections) {
         this.sections = sections;
     }
 

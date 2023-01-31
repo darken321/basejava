@@ -7,6 +7,4 @@ public abstract class Section implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
     public abstract void printAll();
-
-    public abstract String getStringSection();
 }
