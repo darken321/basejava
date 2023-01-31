@@ -21,48 +21,32 @@ public class DataStreamStrategy implements StreamStrategy {
                 dos.writeUTF(entry.getKey().name());
                 dos.writeUTF(entry.getValue());
             }
-            //считал все (4) секции в EnumMap
             Map<SectionType, Section> sections = r.getSections();
 
-            //записал две секции в файл
             Section objective = sections.get(SectionType.OBJECTIVE);
             dos.writeUTF(((TextSection) objective).getTextSection());
             Section personal = sections.get(SectionType.PERSONAL);
             dos.writeUTF(((TextSection) personal).getTextSection());
 
             {
-                //беру секцию достижения
                 Section achievement = sections.get(SectionType.ACHIEVEMENT);
-                //собираю лист стрингов в массив
                 List<String> achievementArray = ((ListTextSection) achievement).getList();
-
-                //длина массива, пишу ее в файл
                 dos.writeInt(achievementArray.size());
-
                 for (String array : achievementArray) {
                     dos.writeUTF(array);
                 }
             }
             {
-                //беру секцию квалификация
                 Section qualifications = sections.get(SectionType.QUALIFICATIONS);
-                //собираю лист стрингов в массив
                 List<String> qualificationsArray = ((ListTextSection) qualifications).getList();
-
-                //длина массива, пишу ее в файл
                 dos.writeInt(qualificationsArray.size());
-
                 for (String array : qualificationsArray) {
                     dos.writeUTF(array);
                 }
             }
             {
-                //беру секцию опыт
                 Section experience = sections.get(SectionType.EXPERIENCE);
-                //собираю лист организаций в массив
                 List<Organization> organizationsArray = ((OrganizationSection) experience).getOrganizations();
-
-                //пишу в файл число организаций
                 dos.writeInt(organizationsArray.size());
                 for (Organization organization : organizationsArray) {
                     dos.writeUTF(organization.getName());
@@ -77,12 +61,8 @@ public class DataStreamStrategy implements StreamStrategy {
                 }
             }
             {
-                //беру секцию обучение
                 Section education = sections.get(SectionType.EDUCATION);
-                //собираю лист организаций в массив
                 List<Organization> educationArray = ((OrganizationSection) education).getOrganizations();
-
-                //пишу ее в файл число организаций
                 dos.writeInt(educationArray.size());
                 for (Organization organization : educationArray) {
                     dos.writeUTF(organization.getName());
@@ -134,11 +114,8 @@ public class DataStreamStrategy implements StreamStrategy {
                 section.put(SectionType.QUALIFICATIONS, new ListTextSection(stringsArray));
             }
             {
-                //беру секцию опыт
                 List<Organization> organizations = new ArrayList<>();
-                //собираю лист организаций в массив
                 int size = dis.readInt();
-                //цикл по организациям - опыт
                 for (int i = 0; i < size; i++) {
                     String name = dis.readUTF();
                     String website = dis.readUTF();
@@ -152,11 +129,8 @@ public class DataStreamStrategy implements StreamStrategy {
                 section.put(SectionType.EXPERIENCE, new OrganizationSection(organizations));
             }
             {
-                //беру секцию обучение
                 List<Organization> organizations = new ArrayList<>();
-                //собираю лист организаций в массив
                 int size = dis.readInt();
-                //цикл по организациям - обучение
                 for (int i = 0; i < size; i++) {
                     String name = dis.readUTF();
                     String website = dis.readUTF();
