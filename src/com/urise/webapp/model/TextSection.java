@@ -6,15 +6,12 @@ import java.io.Serial;
 import java.util.Objects;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class TextSection extends Section {
+public class TextSection extends Section<String> {
     @Serial
     private static final long serialVersionUID = 1L;
     private String text;
 
     public TextSection() {
-    }
-    public String getTextSection() {
-        return text;
     }
 
     public TextSection(String text) {
@@ -24,6 +21,11 @@ public class TextSection extends Section {
     @Override
     public void printAll() {
         System.out.println(text);
+    }
+
+    @Override
+    public String getSections() {
+        return text;
     }
 
     @Override

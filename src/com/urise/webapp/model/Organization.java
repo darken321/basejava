@@ -32,7 +32,7 @@ public class Organization implements Serializable {
         return website;
     }
 
-    public List<Period> getPeriod() {
+    public List<Period> getPeriods() {
         return period;
     }
 

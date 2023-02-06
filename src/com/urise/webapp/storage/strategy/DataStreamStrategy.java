@@ -11,68 +11,47 @@ import java.util.Map;
 public class DataStreamStrategy implements StreamStrategy {
 
     @Override
-    public void doWrite(Resume r, OutputStream os) throws IOException {
+    public void doWrite(Resume resume, OutputStream os) throws IOException {
         try (DataOutputStream dos = new DataOutputStream(os)) {
-            dos.writeUTF(r.getUuid());
-            dos.writeUTF(r.getFullName());
-            Map<ContactType, String> contacts = r.getContacts();
+            dos.writeUTF(resume.getUuid());
+            dos.writeUTF(resume.getFullName());
+            Map<ContactType, String> contacts = resume.getContacts();
             dos.writeInt(contacts.size());
             for (Map.Entry<ContactType, String> entry : contacts.entrySet()) {
                 dos.writeUTF(entry.getKey().name());
                 dos.writeUTF(entry.getValue());
             }
-            Map<SectionType, Section> sections = r.getSections();
+            dos.writeInt(resume.getSectionsSet().size());
+            for (SectionType section : resume.getSectionsSet()) {
+                switch (section) {
 
-            Section objective = sections.get(SectionType.OBJECTIVE);
-            dos.writeUTF(((TextSection) objective).getTextSection());
-            Section personal = sections.get(SectionType.PERSONAL);
-            dos.writeUTF(((TextSection) personal).getTextSection());
-
-            {
-                Section achievement = sections.get(SectionType.ACHIEVEMENT);
-                List<String> achievementArray = ((ListTextSection) achievement).getList();
-                dos.writeInt(achievementArray.size());
-                for (String array : achievementArray) {
-                    dos.writeUTF(array);
-                }
-            }
-            {
-                Section qualifications = sections.get(SectionType.QUALIFICATIONS);
-                List<String> qualificationsArray = ((ListTextSection) qualifications).getList();
-                dos.writeInt(qualificationsArray.size());
-                for (String array : qualificationsArray) {
-                    dos.writeUTF(array);
-                }
-            }
-            {
-                Section experience = sections.get(SectionType.EXPERIENCE);
-                List<Organization> organizationsArray = ((OrganizationSection) experience).getOrganizations();
-                dos.writeInt(organizationsArray.size());
-                for (Organization organization : organizationsArray) {
-                    dos.writeUTF(organization.getName());
-                    dos.writeUTF(organization.getWebsite());
-                    dos.writeInt(organization.getPeriod().size());
-                    for (Period period : organization.getPeriod()) {
-                        dos.writeUTF(period.getStartDate());
-                        dos.writeUTF(period.getEndDate());
-                        dos.writeUTF(period.getTitle());
-                        dos.writeUTF(period.getDescription());
+                    case OBJECTIVE, PERSONAL -> {
+                        dos.writeUTF(section.name());
+                        dos.writeUTF(resume.getSection(section).getSections().toString());
                     }
-                }
-            }
-            {
-                Section education = sections.get(SectionType.EDUCATION);
-                List<Organization> educationArray = ((OrganizationSection) education).getOrganizations();
-                dos.writeInt(educationArray.size());
-                for (Organization organization : educationArray) {
-                    dos.writeUTF(organization.getName());
-                    dos.writeUTF(organization.getWebsite());
-                    dos.writeInt(organization.getPeriod().size());
-                    for (Period period : organization.getPeriod()) {
-                        dos.writeUTF(period.getStartDate());
-                        dos.writeUTF(period.getEndDate());
-                        dos.writeUTF(period.getTitle());
-                        dos.writeUTF(period.getDescription());
+                    case ACHIEVEMENT, QUALIFICATIONS -> {
+                        dos.writeUTF(section.name());
+                        List<String> sections = (List<String>) (resume.getSection(section)).getSections();
+                        dos.writeInt(sections.size());
+                        for (String s : sections) {
+                            dos.writeUTF(s);
+                        }
+                    }
+                    case EXPERIENCE, EDUCATION -> {
+                        dos.writeUTF(section.name());
+                        List<Organization> sections = (List<Organization>) (resume.getSection(section)).getSections();
+                        dos.writeInt(sections.size());
+                        for (Organization org : sections) {
+                            dos.writeUTF(org.getName());
+                            dos.writeUTF(org.getWebsite());
+                            dos.writeInt(org.getPeriods().size());
+                            for (Period period : org.getPeriods()) {
+                                dos.writeUTF(period.getStartDate());
+                                dos.writeUTF(period.getEndDate());
+                                dos.writeUTF(period.getTitle());
+                                dos.writeUTF(period.getDescription());
+                            }
+                        }
                     }
                 }
             }
@@ -81,70 +60,56 @@ public class DataStreamStrategy implements StreamStrategy {
 
     @Override
     public Resume doRead(InputStream is) throws IOException {
+        Resume resume;
         try (DataInputStream dis = new DataInputStream(is)) {
-            Resume resume;
             {
                 String uuid = dis.readUTF();
                 String fullName = dis.readUTF();
-                int size = dis.readInt();
                 resume = new Resume(uuid, fullName);
+                int size = dis.readInt();
                 EnumMap<ContactType, String> contacts = new EnumMap<>(ContactType.class);
                 for (int i = 0; i < size; i++) {
                     contacts.put(ContactType.valueOf(dis.readUTF()), dis.readUTF());
                 }
                 resume.setContacts(contacts);
             }
-            EnumMap<SectionType, Section> section = new EnumMap<>(SectionType.class);
-            section.put(SectionType.OBJECTIVE, new TextSection(dis.readUTF()));
-            section.put(SectionType.PERSONAL, new TextSection(dis.readUTF()));
-            {
-                List<String> stringsArray = new ArrayList<>();
-                int size = dis.readInt();
-                for (int i = 0; i < size; i++) {
-                    stringsArray.add(dis.readUTF());
-                }
-                section.put(SectionType.ACHIEVEMENT, new ListTextSection(stringsArray));
-            }
-            {
-                List<String> stringsArray = new ArrayList<>();
-                int size = dis.readInt();
-                for (int i = 0; i < size; i++) {
-                    stringsArray.add(dis.readUTF());
-                }
-                section.put(SectionType.QUALIFICATIONS, new ListTextSection(stringsArray));
-            }
-            {
-                List<Organization> organizations = new ArrayList<>();
-                int size = dis.readInt();
-                for (int i = 0; i < size; i++) {
-                    String name = dis.readUTF();
-                    String website = dis.readUTF();
-                    int periodSize = dis.readInt();
-                    List<Period> periods = new ArrayList<>();
-                    for (int j = 0; j < periodSize; j++) {
-                        periods.add(new Period(dis.readUTF(), dis.readUTF(), dis.readUTF(), dis.readUTF()));
+
+            String sectionName;
+            int sectionsCount = dis.readInt();
+            while (sectionsCount > 0) {
+                sectionName = dis.readUTF();
+                switch (sectionName) {
+
+                    case "OBJECTIVE", "PERSONAL" -> {
+                        resume.setSection(SectionType.valueOf(sectionName), new TextSection(dis.readUTF()));
                     }
-                    organizations.add(new Organization(name, website, periods));
-                }
-                section.put(SectionType.EXPERIENCE, new OrganizationSection(organizations));
-            }
-            {
-                List<Organization> organizations = new ArrayList<>();
-                int size = dis.readInt();
-                for (int i = 0; i < size; i++) {
-                    String name = dis.readUTF();
-                    String website = dis.readUTF();
-                    int periodSize = dis.readInt();
-                    List<Period> periods = new ArrayList<>();
-                    for (int j = 0; j < periodSize; j++) {
-                        periods.add(new Period(dis.readUTF(), dis.readUTF(), dis.readUTF(), dis.readUTF()));
+                    case "ACHIEVEMENT", "QUALIFICATIONS" -> {
+                        int size = dis.readInt();
+                        List<String> sections = new ArrayList<>();
+                        for (int i = 0; i < size; i++) {
+                            sections.add(dis.readUTF());
+                        }
+                        resume.setSection(SectionType.valueOf(sectionName), new ListTextSection(sections));
                     }
-                    organizations.add(new Organization(name, website, periods));
+                    case "EXPERIENCE", "EDUCATION" -> {
+                        int size = dis.readInt();
+                        List<Organization> organizations = new ArrayList<>(size);
+                        for (int i = 0; i < size; i++) {
+                            String name = dis.readUTF();
+                            String website = dis.readUTF();
+                            int periodsNum = dis.readInt();
+                            List<Period> periods = new ArrayList<>(periodsNum);
+                            for (int j = 0; j < periodsNum; j++) {
+                                periods.add(new Period(dis.readUTF(), dis.readUTF(), dis.readUTF(), dis.readUTF()));
+                            }
+                            organizations.add(new Organization(name, website, periods));
+                        }
+                        resume.setSection(SectionType.valueOf(sectionName), new OrganizationSection(organizations));
+                    }
                 }
-                section.put(SectionType.EDUCATION, new OrganizationSection(organizations));
+                sectionsCount--;
             }
-            resume.setSections(section);
-            return resume;
         }
+        return resume;
     }
 }

@@ -15,10 +15,9 @@ public class ResumeTestData {
             System.out.println(c.getValue());
         }
 
-        Set<Map.Entry<SectionType, Section>> entries = resume.getSections().entrySet();
-        for (Map.Entry<SectionType, Section> c : resume.getSections().entrySet()) {
-            System.out.println("\n    " + c.getKey().getTitle());
-            c.getValue().printAll();
+        for (SectionType st:SectionType.values()){
+            System.out.println("\n    " + st.getTitle());
+            resume.getSection(st).printAll();
         }
     }
 
@@ -36,13 +35,11 @@ public class ResumeTestData {
         contact.put(ContactType.HOMEPAGE, "http://gkislin.ru/");
         resume.setContacts(contact);
 
-        Map<SectionType, Section> position = new EnumMap<>(SectionType.class);
+//        resume.setSection(SectionType.OBJECTIVE,
+//                new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям"));
 
-        TextSection objective = new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям");
-        position.put(SectionType.OBJECTIVE, objective);
-
-        TextSection personal = new TextSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры.");
-        position.put(SectionType.PERSONAL, personal);
+        resume.setSection(SectionType.PERSONAL,
+                new TextSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры."));
 
         {
             List<String> stringsArray = new ArrayList<>();
@@ -53,9 +50,9 @@ public class ResumeTestData {
             stringsArray.add("Реализация c нуля Rich Internet Application приложения на стеке технологий JPA, Spring, Spring-MVC, GWT, ExtGWT (GXT), Commet, HTML5, Highstock для алгоритмического трейдинга.");
             stringsArray.add("Создание JavaEE фреймворка для отказоустойчивого взаимодействия слабо-связанных сервисов (SOA-base архитектура, JAX-WS, JMS, AS Glassfish). Сбор статистики сервисов и информации о состоянии через систему мониторинга Nagios. Реализация онлайн клиента для администрирования и мониторинга системы по JMX (Jython/ Django).");
             stringsArray.add("Реализация протоколов по приему платежей всех основных платежных системы России (Cyberplat, Eport, Chronopay, Сбербанк), Белоруcсии(Erip, Osmp) и Никарагуа.");
-            position.put(SectionType.ACHIEVEMENT, new ListTextSection(stringsArray));
+            resume.setSection(SectionType.ACHIEVEMENT, new ListTextSection(stringsArray));
         }
-        {
+/*        {
             List<String> stringsArray = new ArrayList<>();
             stringsArray.add("JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, WebLogic, WSO2");
             stringsArray.add("Version control: Subversion, Git, Mercury, ClearCase, Perforce");
@@ -71,9 +68,9 @@ public class ResumeTestData {
             stringsArray.add("администрирование Hudson/Jenkins, Ant + custom task, SoapUI, JPublisher, Flyway, Nagios, iReport, OpenCmis, Bonita, pgBouncer");
             stringsArray.add("Отличное знание и опыт применения концепций ООП, SOA, шаблонов проектрирования, архитектурных шаблонов, UML, функционального программирования");
             stringsArray.add("Родной русский, английский \"upper intermediate\"");
-            position.put(SectionType.QUALIFICATIONS, new ListTextSection(stringsArray));
-        }
-        {
+            resume.setSection(SectionType.QUALIFICATIONS, new ListTextSection(stringsArray));
+        }*/
+/*        {
             List<Organization> experience = new ArrayList<>();
             {
                 List<Period> period = new ArrayList<>();
@@ -85,9 +82,9 @@ public class ResumeTestData {
                 period.add(new Period("10/2014", "01/2016", "Старший разработчик (backend)", "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO."));
                 experience.add(new Organization("Wrike", "https://www.wrike.com/", period));
             }
-            position.put(SectionType.EXPERIENCE, new OrganizationSection(experience));
-        }
-        {
+            resume.setSection(SectionType.EXPERIENCE, new OrganizationSection(experience));
+        }*/
+      /*  {
             List<Organization> education = new ArrayList<>();
             {
                 List<Period> period = new ArrayList<>();
@@ -105,10 +102,8 @@ public class ResumeTestData {
                 period.add(new Period("09/1987", "07/1993", "Инженер (программист Fortran, C)", ""));
                 education.add(new Organization("Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики", "http://www.ifmo.ru/", period));
             }
-            position.put(SectionType.EDUCATION, new OrganizationSection(education));
-        }
-        resume.setSections(position);
-
+            resume.setSection(SectionType.EDUCATION, new OrganizationSection(education));
+        }*/
         return resume;
     }
 }

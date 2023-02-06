@@ -7,10 +7,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.EnumMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Initial resume class
@@ -39,12 +36,16 @@ public class Resume implements Comparable<Resume>, Serializable {
         return contacts;
     }
 
-    public void setSections(Map<SectionType, Section> sections) {
-        this.sections = sections;
+    public void setSection(SectionType type, Section section) {
+        sections.put(type, section);
     }
 
-    public Map<SectionType, Section> getSections() {
-        return sections;
+    public Section getSection(SectionType type) {
+        return sections.get(type);
+    }
+
+    public Set<SectionType> getSectionsSet(){
+        return sections.keySet();
     }
 
     public Resume(String fullName) {

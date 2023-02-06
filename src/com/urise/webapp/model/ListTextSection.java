@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Objects;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ListTextSection extends Section {
+public class ListTextSection extends Section<List<String>>{
     @Serial
     private static final long serialVersionUID = 1L;
     private List<String> list;
@@ -28,6 +28,11 @@ public class ListTextSection extends Section {
         for (String st : list) {
             System.out.println(st);
         }
+    }
+
+    @Override
+    public List<String> getSections() {
+        return list;
     }
 
     @Override

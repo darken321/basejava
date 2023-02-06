@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Objects;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class OrganizationSection extends Section {
+public class OrganizationSection extends Section<List<Organization>> {
     @Serial
     private static final long serialVersionUID = 1L;
     private List<Organization> organizations;
@@ -19,21 +19,22 @@ public class OrganizationSection extends Section {
         this.organizations = organizations;
     }
 
-    public List<Organization> getOrganizations() {
-        return organizations;
-    }
-
     @Override
     public void printAll() {
         for (Organization cs : organizations) {
             System.out.println(cs.getName());
             System.out.println(cs.getWebsite());
-            for (Period p : cs.getPeriod()) {
+            for (Period p : cs.getPeriods()) {
                 System.out.println(p.getStartDate() + " - " + p.getEndDate());
                 System.out.println(p.getTitle());
                 System.out.println(p.getDescription());
             }
         }
+    }
+
+    @Override
+    public List<Organization> getSections() {
+        return organizations;
     }
 
     @Override
