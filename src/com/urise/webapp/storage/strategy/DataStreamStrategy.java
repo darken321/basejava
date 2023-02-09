@@ -62,17 +62,17 @@ public class DataStreamStrategy implements StreamStrategy {
     public Resume doRead(InputStream is) throws IOException {
         Resume resume;
         try (DataInputStream dis = new DataInputStream(is)) {
-            {
-                String uuid = dis.readUTF();
-                String fullName = dis.readUTF();
-                resume = new Resume(uuid, fullName);
-                int size = dis.readInt();
-                EnumMap<ContactType, String> contacts = new EnumMap<>(ContactType.class);
-                for (int i = 0; i < size; i++) {
-                    contacts.put(ContactType.valueOf(dis.readUTF()), dis.readUTF());
-                }
-                resume.setContacts(contacts);
+
+            String uuid = dis.readUTF();
+            String fullName = dis.readUTF();
+
+            resume = new Resume(uuid, fullName);
+            int size = dis.readInt();
+            Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
+            for (int i = 0; i < size; i++) {
+                contacts.put(ContactType.valueOf(dis.readUTF()), dis.readUTF());
             }
+            resume.setContacts(contacts);
 
             String sectionName;
             int sectionsCount = dis.readInt();
@@ -84,7 +84,7 @@ public class DataStreamStrategy implements StreamStrategy {
                         resume.setSection(SectionType.valueOf(sectionName), new TextSection(dis.readUTF()));
                     }
                     case "ACHIEVEMENT", "QUALIFICATIONS" -> {
-                        int size = dis.readInt();
+                        size = dis.readInt();
                         List<String> sections = new ArrayList<>();
                         for (int i = 0; i < size; i++) {
                             sections.add(dis.readUTF());
@@ -92,7 +92,7 @@ public class DataStreamStrategy implements StreamStrategy {
                         resume.setSection(SectionType.valueOf(sectionName), new ListTextSection(sections));
                     }
                     case "EXPERIENCE", "EDUCATION" -> {
-                        int size = dis.readInt();
+                        size = dis.readInt();
                         List<Organization> organizations = new ArrayList<>(size);
                         for (int i = 0; i < size; i++) {
                             String name = dis.readUTF();

@@ -16,6 +16,7 @@ public class OrganizationSection extends Section<List<Organization>> {
     }
 
     public OrganizationSection(List<Organization> organizations) {
+        Objects.requireNonNull(organizations,"Organizations must not be null");
         this.organizations = organizations;
     }
 

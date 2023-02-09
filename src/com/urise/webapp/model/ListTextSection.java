@@ -16,6 +16,7 @@ public class ListTextSection extends Section<List<String>>{
     }
 
     public ListTextSection(List<String> list) {
+        Objects.requireNonNull(list, "Text must not be null");
         this.list = list;
     }
 

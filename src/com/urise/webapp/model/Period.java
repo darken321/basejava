@@ -19,6 +19,10 @@ public class Period implements Serializable {
     }
 
     public Period(String startDate, String stopDate, String title, String description) {
+        Objects.requireNonNull(startDate, "Start date must not be null");
+        Objects.requireNonNull(stopDate, "Stop date must not be null");
+        Objects.requireNonNull(title, "Title  must not be null");
+        Objects.requireNonNull(description, "Description must not be null");
         this.startDate = startDate;
         this.endDate = stopDate;
         this.title = title;
