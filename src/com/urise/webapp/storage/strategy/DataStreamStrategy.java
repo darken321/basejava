@@ -3,10 +3,7 @@ package com.urise.webapp.storage.strategy;
 import com.urise.webapp.model.*;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class DataStreamStrategy implements StreamStrategy {
 
@@ -16,11 +13,12 @@ public class DataStreamStrategy implements StreamStrategy {
             dos.writeUTF(resume.getUuid());
             dos.writeUTF(resume.getFullName());
             Map<ContactType, String> contacts = resume.getContacts();
-            dos.writeInt(contacts.size());
-            for (Map.Entry<ContactType, String> entry : contacts.entrySet()) {
+
+            writeWithException(dos, contacts.entrySet(), entry -> {
                 dos.writeUTF(entry.getKey().name());
                 dos.writeUTF(entry.getValue());
-            }
+            });
+
             dos.writeInt(resume.getSectionsSet().size());
             for (SectionType section : resume.getSectionsSet()) {
                 switch (section) {
@@ -56,6 +54,25 @@ public class DataStreamStrategy implements StreamStrategy {
                 }
             }
         }
+    }
+    //должен получиться некий метод writeWithException (...) throws IOException (который заменит стандартный forEach),
+    // который как параметры принимает коллекцию (в буквальном смысле Collection), DataOutputStream и твой функциональный интерфейс.
+// <T> writeCollection - типизированный метод,
+// на вход подается коллекция collection
+// с типом Т
+// в конце кусок кода, который будет принимать элемент коллекции.
+// в конце передается интерфейс writer типа Consumer, который работает с типом данных Т
+
+
+    private <T> void writeWithException(DataOutputStream dos, Collection<T> collection, MyConsumer<? super T> writer) throws IOException {
+        Objects.requireNonNull(writer);
+        dos.writeInt(collection.size());
+        for (T item : collection) {
+            writer.accept(item);
+        }
+    }
+    private interface MyConsumer <T> {
+        void accept(T t) throws IOException;
     }
 
     @Override

@@ -70,8 +70,8 @@ public class ResumeTestData {
 
         List<Organization> experience = new ArrayList<>();
         List<Period> period1 = new ArrayList<>();
-        period1.add(new Period("10/2013", "Сейчас", "Автор проекта.", "Создание, организация и проведение Java онлайн проектов и стажировок."));
-        experience.add(new Organization("Java Online Projects", "http://javaops.ru/", period1));
+        period1.add(new Period("10/2013", "Сейчас", "Автор проекта.", null));//"Создание, организация и проведение Java онлайн проектов и стажировок."));
+        experience.add(new Organization("Java Online Projects",null, period1));// "http://javaops.ru/", period1));
         List<Period> period2 = new ArrayList<>();
         period2.add(new Period("10/2014", "01/2016", "Старший разработчик (backend)", "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO."));
         experience.add(new Organization("Wrike", "https://www.wrike.com/", period2));
