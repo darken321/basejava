@@ -21,48 +21,30 @@ public class DataStreamStrategy implements StreamStrategy {
 
             dos.writeInt(resume.getSectionsSet().size());
             for (SectionType section : resume.getSectionsSet()) {
+                dos.writeUTF(section.name());
                 switch (section) {
-
                     case OBJECTIVE, PERSONAL -> {
-                        dos.writeUTF(section.name());
-                        dos.writeUTF(resume.getSection(section).getSections().toString());
+                        writeWithException(dos, List.of(resume.getSection(section).getSections().toString()), str -> dos.writeUTF(str));
                     }
                     case ACHIEVEMENT, QUALIFICATIONS -> {
-                        dos.writeUTF(section.name());
-                        List<String> sections = (List<String>) (resume.getSection(section)).getSections();
-                        dos.writeInt(sections.size());
-                        for (String s : sections) {
-                            dos.writeUTF(s);
-                        }
+                        writeWithException(dos, (List<String>) (resume.getSection(section)).getSections(), dos::writeUTF);
                     }
                     case EXPERIENCE, EDUCATION -> {
-                        dos.writeUTF(section.name());
-                        List<Organization> sections = (List<Organization>) (resume.getSection(section)).getSections();
-                        dos.writeInt(sections.size());
-                        for (Organization org : sections) {
+                        writeWithException(dos, (List<Organization>) (resume.getSection(section)).getSections(), org -> {
                             dos.writeUTF(org.getName());
                             dos.writeUTF(org.getWebsite());
-                            dos.writeInt(org.getPeriods().size());
-                            for (Period period : org.getPeriods()) {
+                            writeWithException(dos, org.getPeriods(), period -> {
                                 dos.writeUTF(period.getStartDate());
                                 dos.writeUTF(period.getEndDate());
                                 dos.writeUTF(period.getTitle());
                                 dos.writeUTF(period.getDescription());
-                            }
-                        }
+                            });
+                        });
                     }
                 }
             }
         }
     }
-    //должен получиться некий метод writeWithException (...) throws IOException (который заменит стандартный forEach),
-    // который как параметры принимает коллекцию (в буквальном смысле Collection), DataOutputStream и твой функциональный интерфейс.
-// <T> writeCollection - типизированный метод,
-// на вход подается коллекция collection
-// с типом Т
-// в конце кусок кода, который будет принимать элемент коллекции.
-// в конце передается интерфейс writer типа Consumer, который работает с типом данных Т
-
 
     private <T> void writeWithException(DataOutputStream dos, Collection<T> collection, MyConsumer<? super T> writer) throws IOException {
         Objects.requireNonNull(writer);
@@ -71,7 +53,8 @@ public class DataStreamStrategy implements StreamStrategy {
             writer.accept(item);
         }
     }
-    private interface MyConsumer <T> {
+
+    private interface MyConsumer<T> {
         void accept(T t) throws IOException;
     }
 
@@ -98,6 +81,7 @@ public class DataStreamStrategy implements StreamStrategy {
                 switch (sectionName) {
 
                     case "OBJECTIVE", "PERSONAL" -> {
+                        dis.readInt();
                         resume.setSection(SectionType.valueOf(sectionName), new TextSection(dis.readUTF()));
                     }
                     case "ACHIEVEMENT", "QUALIFICATIONS" -> {
