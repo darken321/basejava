@@ -46,7 +46,7 @@ public class DataStreamStrategy implements StreamStrategy {
         }
     }
 
-    private <T> void writeWithException(DataOutputStream dos, Collection<T> collection, MyConsumer<? super T> writer) throws IOException {
+    private <T> void writeWithException(DataOutputStream dos, Collection<T> collection, MyWriter<? super T> writer) throws IOException {
         Objects.requireNonNull(writer);
         dos.writeInt(collection.size());
         for (T item : collection) {
@@ -54,7 +54,7 @@ public class DataStreamStrategy implements StreamStrategy {
         }
     }
 
-    private interface MyConsumer<T> {
+    private interface MyWriter<T> {
         void accept(T t) throws IOException;
     }
 
@@ -62,17 +62,11 @@ public class DataStreamStrategy implements StreamStrategy {
     public Resume doRead(InputStream is) throws IOException {
         Resume resume;
         try (DataInputStream dis = new DataInputStream(is)) {
-
             String uuid = dis.readUTF();
             String fullName = dis.readUTF();
-
             resume = new Resume(uuid, fullName);
-            int size = dis.readInt();
-            Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
-            for (int i = 0; i < size; i++) {
-                contacts.put(ContactType.valueOf(dis.readUTF()), dis.readUTF());
-            }
-            resume.setContacts(contacts);
+
+            resume.setContacts(readContactsWithException(dis, dis::readUTF));
 
             String sectionName;
             int sectionsCount = dis.readInt();
@@ -81,30 +75,18 @@ public class DataStreamStrategy implements StreamStrategy {
                 switch (sectionName) {
 
                     case "OBJECTIVE", "PERSONAL" -> {
-                        dis.readInt();
-                        resume.setSection(SectionType.valueOf(sectionName), new TextSection(dis.readUTF()));
+                        resume.setSection(SectionType.valueOf(sectionName),
+                                new TextSection((readWithException(dis, dis::readUTF)).get(0)));
                     }
                     case "ACHIEVEMENT", "QUALIFICATIONS" -> {
-                        size = dis.readInt();
-                        List<String> sections = new ArrayList<>();
-                        for (int i = 0; i < size; i++) {
-                            sections.add(dis.readUTF());
-                        }
-                        resume.setSection(SectionType.valueOf(sectionName), new ListTextSection(sections));
+                        resume.setSection(SectionType.valueOf(sectionName),
+                                new ListTextSection(readWithException(dis, dis::readUTF)));
+
                     }
                     case "EXPERIENCE", "EDUCATION" -> {
-                        size = dis.readInt();
-                        List<Organization> organizations = new ArrayList<>(size);
-                        for (int i = 0; i < size; i++) {
-                            String name = dis.readUTF();
-                            String website = dis.readUTF();
-                            int periodsNum = dis.readInt();
-                            List<Period> periods = new ArrayList<>(periodsNum);
-                            for (int j = 0; j < periodsNum; j++) {
-                                periods.add(new Period(dis.readUTF(), dis.readUTF(), dis.readUTF(), dis.readUTF()));
-                            }
-                            organizations.add(new Organization(name, website, periods));
-                        }
+                        List<Organization> organizations = readWithException(dis, ()->
+                                new Organization(dis.readUTF(),dis.readUTF(),
+                                    readWithException(dis,() ->new Period(dis.readUTF(),dis.readUTF(),dis.readUTF(),dis.readUTF()))));
                         resume.setSection(SectionType.valueOf(sectionName), new OrganizationSection(organizations));
                     }
                 }
@@ -112,5 +94,29 @@ public class DataStreamStrategy implements StreamStrategy {
             }
         }
         return resume;
+    }
+
+    private <T> List<T> readWithException(DataInputStream dis, MyReader<? super T> reader) throws IOException {
+        Objects.requireNonNull(reader);
+        int size = dis.readInt();
+        List<T> collection = new ArrayList<>(size);
+        for (int i = 0; i < size; i++) {
+            collection.add((T) reader.accept());
+        }
+        return collection;
+    }
+
+    private <T> Map<ContactType, String> readContactsWithException(DataInputStream dis, MyReader<T> reader) throws IOException {
+        Objects.requireNonNull(reader);
+        int size = dis.readInt();
+        Map<ContactType, String> map = new EnumMap<>(ContactType.class);
+        for (int i = 0; i < size; i++) {
+            map.put(ContactType.valueOf((String) reader.accept()), (String) reader.accept());
+        }
+        return map;
+    }
+
+    private interface MyReader<T> {
+        T accept() throws IOException;
     }
 }
