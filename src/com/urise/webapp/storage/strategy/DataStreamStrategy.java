@@ -66,37 +66,38 @@ public class DataStreamStrategy implements StreamStrategy {
             String fullName = dis.readUTF();
             resume = new Resume(uuid, fullName);
 
-            resume.setContacts(readContactsWithException(dis, dis::readUTF));
+            //переделать вот это
+            Map<ContactType, String> contacts = readContactsWithException(dis, dis::readUTF);
+            resume.setContacts(contacts);
 
             String sectionName;
             int sectionsCount = dis.readInt();
-            while (sectionsCount > 0) {
+            for (int i = 0; i < sectionsCount; i++) {
                 sectionName = dis.readUTF();
                 switch (sectionName) {
 
                     case "OBJECTIVE", "PERSONAL" -> {
                         resume.setSection(SectionType.valueOf(sectionName),
-                                new TextSection((readWithException(dis, dis::readUTF)).get(0)));
+                                new TextSection((readListWithException(dis, dis::readUTF)).get(0)));
                     }
                     case "ACHIEVEMENT", "QUALIFICATIONS" -> {
                         resume.setSection(SectionType.valueOf(sectionName),
-                                new ListTextSection(readWithException(dis, dis::readUTF)));
+                                new ListTextSection(readListWithException(dis, dis::readUTF)));
 
                     }
                     case "EXPERIENCE", "EDUCATION" -> {
-                        List<Organization> organizations = readWithException(dis, ()->
-                                new Organization(dis.readUTF(),dis.readUTF(),
-                                    readWithException(dis,() ->new Period(dis.readUTF(),dis.readUTF(),dis.readUTF(),dis.readUTF()))));
+                        List<Organization> organizations = readListWithException(dis, () ->
+                                new Organization(dis.readUTF(), dis.readUTF(),
+                                        readListWithException(dis, () -> new Period(dis.readUTF(), dis.readUTF(), dis.readUTF(), dis.readUTF()))));
                         resume.setSection(SectionType.valueOf(sectionName), new OrganizationSection(organizations));
                     }
                 }
-                sectionsCount--;
             }
         }
         return resume;
     }
 
-    private <T> List<T> readWithException(DataInputStream dis, MyReader<? super T> reader) throws IOException {
+    private <T> List<T> readListWithException(DataInputStream dis, MyReader<? super T> reader) throws IOException {
         Objects.requireNonNull(reader);
         int size = dis.readInt();
         List<T> collection = new ArrayList<>(size);
