@@ -28,10 +28,9 @@ public class Resume implements Comparable<Resume>, Serializable {
     public Resume() {
     }
 
-    public void setContacts(Map<ContactType, String> contacts) {
-        this.contacts = contacts;
+    public void setContacts(ContactType key, String value){
+        contacts.put(key, value);
     }
-
     public Map<ContactType, String> getContacts() {
         return contacts;
     }

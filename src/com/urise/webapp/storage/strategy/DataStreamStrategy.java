@@ -66,16 +66,11 @@ public class DataStreamStrategy implements StreamStrategy {
             String fullName = dis.readUTF();
             resume = new Resume(uuid, fullName);
 
-            //переделать вот это
-            Map<ContactType, String> contacts = readContactsWithException(dis, dis::readUTF);
-            resume.setContacts(contacts);
+            readWithException(dis, () -> resume.setContacts(ContactType.valueOf(dis.readUTF()), dis.readUTF()));
 
-            String sectionName;
-            int sectionsCount = dis.readInt();
-            for (int i = 0; i < sectionsCount; i++) {
-                sectionName = dis.readUTF();
+            readWithException(dis, () -> {
+                String sectionName = dis.readUTF();
                 switch (sectionName) {
-
                     case "OBJECTIVE", "PERSONAL" -> {
                         resume.setSection(SectionType.valueOf(sectionName),
                                 new TextSection((readListWithException(dis, dis::readUTF)).get(0)));
@@ -83,7 +78,6 @@ public class DataStreamStrategy implements StreamStrategy {
                     case "ACHIEVEMENT", "QUALIFICATIONS" -> {
                         resume.setSection(SectionType.valueOf(sectionName),
                                 new ListTextSection(readListWithException(dis, dis::readUTF)));
-
                     }
                     case "EXPERIENCE", "EDUCATION" -> {
                         List<Organization> organizations = readListWithException(dis, () ->
@@ -92,9 +86,20 @@ public class DataStreamStrategy implements StreamStrategy {
                         resume.setSection(SectionType.valueOf(sectionName), new OrganizationSection(organizations));
                     }
                 }
-            }
+            });
         }
         return resume;
+    }
+
+    private void readWithException(DataInputStream dis, DataReader reader) throws IOException {
+        int size = dis.readInt();
+        for (int i = 0; i < size; i++) {
+            reader.read();
+        }
+    }
+    @FunctionalInterface
+    interface DataReader {
+        void read() throws IOException;
     }
 
     private <T> List<T> readListWithException(DataInputStream dis, MyReader<? super T> reader) throws IOException {
@@ -106,17 +111,6 @@ public class DataStreamStrategy implements StreamStrategy {
         }
         return collection;
     }
-
-    private <T> Map<ContactType, String> readContactsWithException(DataInputStream dis, MyReader<T> reader) throws IOException {
-        Objects.requireNonNull(reader);
-        int size = dis.readInt();
-        Map<ContactType, String> map = new EnumMap<>(ContactType.class);
-        for (int i = 0; i < size; i++) {
-            map.put(ContactType.valueOf((String) reader.accept()), (String) reader.accept());
-        }
-        return map;
-    }
-
     private interface MyReader<T> {
         T accept() throws IOException;
     }
