@@ -1,6 +1,6 @@
-package com.urise.webapp.util;
+package com.urise.webapp;
 
-public class LazySingleton {
+public class MainDeadLock {
     static class Friend {
         private final String name;
         public Friend(String name) {

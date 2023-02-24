@@ -24,7 +24,7 @@ public class ResumeTestData {
     public static Resume fillData(String uuid, String fullName) {
 
         Resume resume = new Resume(uuid, fullName);
-        resume.setContacts(ContactType.PHONE, "+7(921) 855-0482");
+/*        resume.setContacts(ContactType.PHONE, "+7(921) 855-0482");
         resume.setContacts(ContactType.SKYPE, "skype:grigory.kislin");
         resume.setContacts(ContactType.MAIL, "gkislin@yandex.ru");
         resume.setContacts(ContactType.LINKEDIN, "https://www.linkedin.com/in/gkislin");
@@ -86,6 +86,7 @@ public class ResumeTestData {
         period5.add(new Period("09/1987", "07/1993", "Инженер (программист Fortran, C)", ""));
         education.add(new Organization("Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики", "http://www.ifmo.ru/", period5));
         resume.setSection(SectionType.EDUCATION, new OrganizationSection(education));
+        */
 
         return resume;
     }
