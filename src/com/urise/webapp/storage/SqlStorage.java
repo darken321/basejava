@@ -18,30 +18,42 @@ public class SqlStorage implements Storage {
     }
 
     @Override
+//    public void clear() {
+//        String statement ="DELETE FROM resume";
+//        try (Connection conn = connectionFactory.getConnection();
+//        PreparedStatement ps = conn.prepareStatement(statement)){
+//            ps.execute();
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
     public void clear() {
-        try (Connection conn = connectionFactory.getConnection();
-             PreparedStatement ps = conn.prepareStatement("DELETE FROM resume")) {
-            ps.execute();
-        } catch (SQLException e) {
-            throw new StorageException(e);
-        }
+        SqlHelper("DELETE FROM resume", statement -> statement.execute());
     }
+
+
+    //общее - прописать в интерфейс
+    //--try создаем Connection со строкой
+    //- что-то делаем с ps
+    //- блок catch
+    interface IHelper {
+        Object psOperations(PreparedStatement ps) throws SQLException;
+    }
+
 
     @Override
     public void update(Resume r) {
-        try (Connection conn = connectionFactory.getConnection();
-             PreparedStatement ps = conn.prepareStatement("UPDATE resume SET full_name = ? WHERE uuid = ?")) {
-            ps.setString(1, r.getFullName());
-            ps.setString(2, r.getUuid());
-            if (ps.executeUpdate() == 0) {
+        SqlHelper("UPDATE resume SET full_name = ? WHERE uuid = ?", preparedStatement -> {
+            preparedStatement.setString(1, r.getFullName());
+            preparedStatement.setString(2, r.getUuid());
+            if (preparedStatement.executeUpdate() == 0) {
                 throw new NotExistStorageException(r.getUuid());
             }
-        } catch (SQLException e) {
-            throw new StorageException(e);
-        }
+            return null;
+        });
     }
 
-    @Override
+    @Override // TODO проблема с exceptions, может сделать как в update
     public void save(Resume r) {
         try (Connection conn = connectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement("INSERT INTO resume (uuid, full_name) VALUES (?, ?)")) {
@@ -53,19 +65,52 @@ public class SqlStorage implements Storage {
         }
     }
 
+    //    @Override
+//    public Resume get(String uuid) {
+//        try (Connection conn = connectionFactory.getConnection();
+//             PreparedStatement ps = conn.prepareStatement("SELECT * FROM resume r WHERE r.uuid = ?")) {
+//            ps.setString(1, uuid);
+//            ResultSet rs = ps.executeQuery();
+//            if (!rs.next()) {
+//                throw new NotExistStorageException(uuid);
+//            }
+//            return new Resume(uuid, rs.getString("full_name"));
+//        } catch (SQLException e) {
+//            throw new StorageException(e);
+//        }
+//    }
+
+    private Object SqlHelper(String statement, IHelper operation) {
+        try (Connection conn = connectionFactory.getConnection();
+             PreparedStatement ps = conn.prepareStatement(statement)) {
+//            ps.execute(); переделал, скопировал с метода clear
+            Object o = operation.psOperations(ps);
+            return o;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        //return null;
+    }
+
     @Override
     public Resume get(String uuid) {
-        try (Connection conn = connectionFactory.getConnection();
-             PreparedStatement ps = conn.prepareStatement("SELECT * FROM resume r WHERE r.uuid = ?")) {
-            ps.setString(1, uuid);
-            ResultSet rs = ps.executeQuery();
+        IHelper iHelper = statement -> {
+            statement.setString(1, uuid);
+            ResultSet rs = statement.executeQuery();
             if (!rs.next()) {
                 throw new NotExistStorageException(uuid);
             }
-            return new Resume(uuid, rs.getString("full_name"));
-        } catch (SQLException e) {
-            throw new StorageException(e);
-        }
+            String result = rs.getString("full_name");
+            return result;
+            //return new Resume(uuid, result);
+            //return rs;
+        };
+
+        // тут надо поймать resume из лямбды
+
+        Object o = SqlHelper("SELECT * FROM resume r WHERE r.uuid = ?", iHelper);
+        String fullName = (String) o;
+        return new Resume(uuid, fullName);
     }
 
     @Override
