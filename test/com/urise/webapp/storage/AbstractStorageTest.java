@@ -12,15 +12,16 @@ import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public abstract class AbstractStorageTest {
 
     protected final static File STORAGE_DIR = Config.get().getStorageDir();
 
     final Storage storage;
-    static final String UUID_1 = "uuid1";
-    static final String UUID_2 = "uuid2";
-    static final String UUID_3 = "uuid3";
+    static final String UUID_1 = UUID.randomUUID().toString();
+    static final String UUID_2 = UUID.randomUUID().toString();
+    static final String UUID_3 = UUID.randomUUID().toString();
 
     static final String NAME_1 = "name1";
     static final String NAME_2 = "name2";

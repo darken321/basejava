@@ -8,10 +8,11 @@ import com.urise.webapp.storage.Storage;
  * Test for your com.urise.webapp.storage.ArrayStorage implementation
  */
 public class MainTestSqlStorage {
-    static final Storage SQL_STORAGE = new SqlStorage("jdbc:postgresql://localhost:5432/postgres",
-            "postgres",
-            "admin");
-
+//    static final Storage SQL_STORAGE = new SqlStorage("jdbc:postgresql://localhost:5432/postgres",
+//            "postgres",
+//            "admin");
+//    static final Storage SQL_STORAGE = new SqlStorage(Config.get().getConnectionFactory());
+    static final Storage SQL_STORAGE = new SqlStorage();
     public static void main(String[] args) {
         Resume r1 = new Resume("uuid1", "Вася");
         Resume r2 = new Resume("uuid2", "Дима");
