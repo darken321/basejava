@@ -79,12 +79,6 @@ public class SqlStorage implements Storage {
                 });
     }
 
-    private static void saveContacts(ResultSet rs, Resume r) throws SQLException {
-        String value = rs.getString("value");
-        ContactType type = ContactType.valueOf(rs.getString("type"));
-        r.setContacts(type, value);
-    }
-
     @Override
     public void delete(String uuid) {
         sqlHelper.sqlExecute("DELETE FROM resume r WHERE r.uuid = ?", statement -> {
@@ -129,6 +123,12 @@ public class SqlStorage implements Storage {
             ResultSet rs = statement.executeQuery();
             return rs.next() ? rs.getInt(1) : 0;
         });
+    }
+
+    private static void saveContacts(ResultSet rs, Resume r) throws SQLException {
+        String value = rs.getString("value");
+        ContactType type = ContactType.valueOf(rs.getString("type"));
+        r.setContacts(type, value);
     }
 
     private void addContacts(Resume r, Connection conn) throws SQLException {
