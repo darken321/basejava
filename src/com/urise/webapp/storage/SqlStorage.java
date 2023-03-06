@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -61,10 +62,10 @@ public class SqlStorage implements Storage {
     @Override
     public Resume get(String uuid) {
         return sqlHelper.sqlExecute("""
-                        SELECT * FROM resume r\s
-                            LEFT JOIN contact c\s
-                            ON r.uuid = c.resume_uuid\s
-                         WHERE r.uuid = ?""",
+                           SELECT * FROM resume r\s
+                        LEFT JOIN contact c\s
+                               ON r.uuid = c.resume_uuid\s
+                            WHERE r.uuid = ?""",
                 statement -> {
                     statement.setString(1, uuid);
                     ResultSet rs = statement.executeQuery();
@@ -92,29 +93,23 @@ public class SqlStorage implements Storage {
 
     @Override
     public List<Resume> getAllSorted() {
-        List<Resume> resumes;
-        resumes = sqlHelper.sqlExecute("SELECT * FROM resume ORDER BY full_name, uuid", statement -> {
-            List<Resume> r = new ArrayList<>();
-            ResultSet rs = statement.executeQuery();
+        return sqlHelper.sqlExecute("""
+                                    SELECT * FROM resume r\s
+                                 LEFT JOIN contact c ON r.uuid = c.resume_uuid\s
+                                  ORDER BY full_name, uuid""", ps -> {
+            ResultSet rs = ps.executeQuery();
+            Map<String, Resume> map = new LinkedHashMap<>();
             while (rs.next()) {
-                r.add(new Resume(rs.getString("uuid"), rs.getString("full_name")));
-            }
-            return r;
-        });
-        sqlHelper.sqlExecute("SELECT * FROM contact ORDER BY resume_uuid", statement -> {
-            ResultSet rs = statement.executeQuery();
-            while (rs.next()) {
-                String uuid = rs.getString("resume_uuid");
-                for (Resume r : resumes) {
-                    if (r.getUuid().equals(uuid)) {
-                        saveContacts(rs, r);
-                        break;
-                    }
+                String uuid = rs.getString("uuid");
+                Resume resume = map.get(uuid);
+                if (resume == null) {
+                    resume = new Resume(uuid, rs.getString("full_name"));
+                    map.put(uuid, resume);
                 }
+                saveContacts(rs, resume);
             }
-            return resumes;
+            return new ArrayList<>(map.values());
         });
-        return resumes;
     }
 
     @Override
