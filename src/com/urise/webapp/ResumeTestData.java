@@ -32,7 +32,7 @@ public class ResumeTestData {
         resume.setContacts(ContactType.STACKOVERFLOW, "https://stackoverflow.com/users/548473");
         resume.setContacts(ContactType.HOMEPAGE, "http://gkislin.ru/");
 
-/*        resume.setSection(SectionType.OBJECTIVE,
+        resume.setSection(SectionType.OBJECTIVE,
                 new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям"));
 
         resume.setSection(SectionType.PERSONAL,
@@ -86,7 +86,7 @@ public class ResumeTestData {
         period5.add(new Period("09/1987", "07/1993", "Инженер (программист Fortran, C)", ""));
         education.add(new Organization("Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики", "http://www.ifmo.ru/", period5));
         resume.setSection(SectionType.EDUCATION, new OrganizationSection(education));
-        */
+
 
         return resume;
     }

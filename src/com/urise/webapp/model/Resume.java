@@ -46,6 +46,9 @@ public class Resume implements Comparable<Resume>, Serializable {
     public Set<SectionType> getSectionsSet(){
         return sections.keySet();
     }
+    public Map<SectionType, Section> getSections(){
+        return sections;
+    }
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
