@@ -8,19 +8,22 @@ import com.urise.webapp.model.SectionType;
 import com.urise.webapp.sql.SqlHelper;
 import com.urise.webapp.util.JsonParser;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 public class SqlStorage implements Storage {
-    SqlHelper sqlHelper = new SqlHelper();
+    SqlHelper sqlHelper;
 
-    public SqlStorage() {
+    public SqlStorage(String dbUrl, String dbUser, String dbPassword) {
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new IllegalStateException(e);
+        }
+        sqlHelper = new SqlHelper(() -> DriverManager.getConnection(dbUrl, dbUser, dbPassword));
     }
 
     @Override

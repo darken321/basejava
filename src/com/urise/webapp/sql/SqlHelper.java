@@ -1,6 +1,5 @@
 package com.urise.webapp.sql;
 
-import com.urise.webapp.Config;
 import com.urise.webapp.exception.ExistStorageException;
 import com.urise.webapp.exception.StorageException;
 
@@ -11,8 +10,8 @@ import java.sql.SQLException;
 public class SqlHelper {
     public ConnectionFactory connectionFactory = null;
 
-    public SqlHelper() {
-        connectionFactory = Config.get().getConnectionFactory();
+    public SqlHelper(ConnectionFactory connectionFactory) {
+        this.connectionFactory = connectionFactory;
     }
 
     public <T> T sqlExecute(String statement, IHelper<T> operation) {
