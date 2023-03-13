@@ -1,6 +1,7 @@
 package com.urise.webapp.web;
 
 import com.urise.webapp.Config;
+import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.model.ContactType;
 import com.urise.webapp.model.Resume;
 import com.urise.webapp.storage.Storage;
@@ -25,6 +26,9 @@ public class ResumeServlet extends HttpServlet {
         }
         Resume r;
         switch (action) {
+            case "add":
+                r = new Resume("");
+                break;
             case "delete":
                 storage.delete(uuid);
                 response.sendRedirect("resume");
@@ -39,6 +43,7 @@ public class ResumeServlet extends HttpServlet {
         request.setAttribute("resume", r);
         request.getRequestDispatcher("view".equals(action) ? "/WEB-INF/jsp/view.jsp" : "/WEB-INF/jsp/edit.jsp")
                 .forward(request,response);
+
     }
 
     @Override
@@ -46,18 +51,31 @@ public class ResumeServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         String uuid = request.getParameter("uuid");
         String fullName = request.getParameter("fullName");
-        Resume r = storage.get(uuid);
-        r.setFullName(fullName);
+        Resume r;
+        boolean isResumeExist = true;
+        try {
+            r = storage.get(uuid); // загружаем резюме из базы по uuid
+            r.setFullName(fullName); //сохраняем имя
+        } catch (NotExistStorageException e) {
+            isResumeExist = false; //не нашел резюме
+            r = new Resume(uuid, fullName);
+        }
+
         for (ContactType type : ContactType.values()) {
             String value = request.getParameter(type.name());
-            if (value != null && value.trim().length() !=0) {
-                r.addContact(type,value);
+            // если не пустой и не равен пробелам, то добавляем контакт
+            if (value != null && value.trim().length() != 0) {
+                r.addContact(type, value);
             } else {
-                r.getContacts().remove(type);
+                r.getContacts().remove(type); // если пустой, то удаляем из резюме
             }
         }
-        storage.update(r);
-        response.sendRedirect("resume");
 
+        if (isResumeExist) {
+            storage.update(r);
+        } else {
+            storage.save(r);
+        }
+        response.sendRedirect("resume");
     }
 }
