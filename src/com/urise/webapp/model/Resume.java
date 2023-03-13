@@ -28,11 +28,14 @@ public class Resume implements Comparable<Resume>, Serializable {
     public Resume() {
     }
 
-    public void setContacts(ContactType key, String value){
+    public void addContact(ContactType key, String value){
         contacts.put(key, value);
     }
     public Map<ContactType, String> getContacts() {
         return contacts;
+    }
+    public String getContact(ContactType contactType) {
+        return contacts.get(contactType);
     }
 
     public void setSection(SectionType type, Section section) {
@@ -69,6 +72,9 @@ public class Resume implements Comparable<Resume>, Serializable {
         return fullName;
     }
 
+    public void setFullName(String full_name) {
+        this.fullName = full_name;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

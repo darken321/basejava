@@ -66,7 +66,7 @@ public class DataStreamStrategy implements StreamStrategy {
             String fullName = dis.readUTF();
             resume = new Resume(uuid, fullName);
 
-            readWithException(dis, () -> resume.setContacts(ContactType.valueOf(dis.readUTF()), dis.readUTF()));
+            readWithException(dis, () -> resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF()));
 
             readWithException(dis, () -> {
                 String sectionName = dis.readUTF();

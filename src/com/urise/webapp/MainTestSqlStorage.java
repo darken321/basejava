@@ -1,8 +1,6 @@
 package com.urise.webapp;
 
-import com.urise.webapp.model.ContactType;
 import com.urise.webapp.model.Resume;
-import com.urise.webapp.storage.SqlStorage;
 import com.urise.webapp.storage.Storage;
 
 /**
@@ -13,7 +11,7 @@ public class MainTestSqlStorage {
 //            "postgres",
 //            "admin");
 //    static final Storage SQL_STORAGE = new SqlStorage(Config.get().getConnectionFactory());
-    static final Storage SQL_STORAGE = new SqlStorage();
+    static final Storage SQL_STORAGE = Config.get().getStorage();
     public static void main(String[] args) {
         Resume r1 = new Resume("uuid1", "Григорий");
         Resume r2 = new Resume("uuid2", "Дима");
@@ -21,13 +19,13 @@ public class MainTestSqlStorage {
         Resume r4 = new Resume("uuid1","Маша");
 //        Resume r5 = new Resume("uuid5","Лена");
 //        Resume r6 = new Resume("uuid2","Женя");
-        r1.setContacts(ContactType.PHONE, "123");
-        r1.setContacts(ContactType.SKYPE, "skype:grigory.kislin");
-
-        r2.setContacts(ContactType.PHONE, "456");
-        r2.setContacts(ContactType.SKYPE, "skype 2");
-        r3.setContacts(ContactType.PHONE, "789");
-        r3.setContacts(ContactType.SKYPE, "skype 33:");
+//        r1.setContacts(ContactType.PHONE, "123");
+//        r1.setContacts(ContactType.SKYPE, "skype:grigory.kislin");
+//
+//        r2.setContacts(ContactType.PHONE, "456");
+//        r2.setContacts(ContactType.SKYPE, "skype 2");
+//        r3.setContacts(ContactType.PHONE, "789");
+//        r3.setContacts(ContactType.SKYPE, "skype 33:");
 
 
         SQL_STORAGE.clear();
@@ -64,7 +62,6 @@ public class MainTestSqlStorage {
 //        SQL_STORAGE.update(r1);
 
         printAll();
-//        System.out.println("Size: " + SQL_STORAGE.size());
     }
 
     static void printAll() {

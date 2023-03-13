@@ -24,13 +24,13 @@ public class ResumeTestData {
     public static Resume fillData(String uuid, String fullName) {
 
         Resume resume = new Resume(uuid, fullName);
-        resume.setContacts(ContactType.PHONE, "+7(921) 855-0482");
-        resume.setContacts(ContactType.SKYPE, "skype:grigory.kislin");
-        resume.setContacts(ContactType.MAIL, "gkislin@yandex.ru");
-        resume.setContacts(ContactType.LINKEDIN, "https://www.linkedin.com/in/gkislin");
-        resume.setContacts(ContactType.GITHUB, "https://github.com/gkislin");
-        resume.setContacts(ContactType.STACKOVERFLOW, "https://stackoverflow.com/users/548473");
-        resume.setContacts(ContactType.HOMEPAGE, "http://gkislin.ru/");
+        resume.addContact(ContactType.PHONE, "+7(921) 855-0482");
+        resume.addContact(ContactType.SKYPE, "skype:grigory.kislin");
+        resume.addContact(ContactType.MAIL, "gkislin@yandex.ru");
+        resume.addContact(ContactType.LINKEDIN, "https://www.linkedin.com/in/gkislin");
+        resume.addContact(ContactType.GITHUB, "https://github.com/gkislin");
+        resume.addContact(ContactType.STACKOVERFLOW, "https://stackoverflow.com/users/548473");
+        resume.addContact(ContactType.HOMEPAGE, "http://gkislin.ru/");
 
         resume.setSection(SectionType.OBJECTIVE,
                 new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям"));
