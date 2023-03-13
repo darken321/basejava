@@ -42,7 +42,7 @@ public class ResumeServlet extends HttpServlet {
         }
         request.setAttribute("resume", r);
         request.getRequestDispatcher("view".equals(action) ? "/WEB-INF/jsp/view.jsp" : "/WEB-INF/jsp/edit.jsp")
-                .forward(request,response);
+                .forward(request, response);
 
     }
 
@@ -54,20 +54,19 @@ public class ResumeServlet extends HttpServlet {
         Resume r;
         boolean isResumeExist = true;
         try {
-            r = storage.get(uuid); // загружаем резюме из базы по uuid
-            r.setFullName(fullName); //сохраняем имя
+            r = storage.get(uuid);
+            r.setFullName(fullName);
         } catch (NotExistStorageException e) {
-            isResumeExist = false; //не нашел резюме
+            isResumeExist = false;
             r = new Resume(uuid, fullName);
         }
 
         for (ContactType type : ContactType.values()) {
             String value = request.getParameter(type.name());
-            // если не пустой и не равен пробелам, то добавляем контакт
             if (value != null && value.trim().length() != 0) {
                 r.addContact(type, value);
             } else {
-                r.getContacts().remove(type); // если пустой, то удаляем из резюме
+                r.getContacts().remove(type);
             }
         }
 
