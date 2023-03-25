@@ -1,7 +1,13 @@
 package com.urise.webapp;
 
+import com.urise.webapp.model.ListTextSection;
 import com.urise.webapp.model.Resume;
+import com.urise.webapp.model.SectionType;
+import com.urise.webapp.model.TextSection;
 import com.urise.webapp.storage.Storage;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Test for your com.urise.webapp.storage.ArrayStorage implementation
@@ -17,6 +23,18 @@ public class MainTestSqlStorage {
         Resume r2 = new Resume("uuid2", "Дима");
         Resume r3 = new Resume("uuid3", "Петя");
         Resume r4 = new Resume("uuid1","Маша");
+        r1.setSection(SectionType.OBJECTIVE,
+                new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям"));
+
+        r1.setSection(SectionType.PERSONAL,
+                new TextSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры."));
+
+        List<String> stringsArray1 = new ArrayList<>();
+        stringsArray1.add("Организация команды и успешная реализация Java ");
+        stringsArray1.add("С 2013 года: разработка проектов ");
+        stringsArray1.add("Реализация протоколов по приему платежей всех основных платежных системы");
+        r1.setSection(SectionType.ACHIEVEMENT, new ListTextSection(stringsArray1));
+
 //        Resume r5 = new Resume("uuid5","Лена");
 //        Resume r6 = new Resume("uuid2","Женя");
 //        r1.setContacts(ContactType.PHONE, "123");
@@ -53,9 +71,9 @@ public class MainTestSqlStorage {
 //        SQL_STORAGE.delete(r3.getUuid());
 //        printAll();
 //        SQL_STORAGE.clear();
-        System.out.println(SQL_STORAGE.get("uuid1"));
-        System.out.println(SQL_STORAGE.get("uuid2"));
-        System.out.println(SQL_STORAGE.get("uuid3"));
+//        System.out.println(SQL_STORAGE.get("uuid1"));
+//        System.out.println(SQL_STORAGE.get("uuid2"));
+//        System.out.println(SQL_STORAGE.get("uuid3"));
 //        r1=r4;
 //        r4.setContacts(ContactType.MAIL, "NO mail");
         System.out.println();

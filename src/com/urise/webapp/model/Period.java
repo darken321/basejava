@@ -44,6 +44,14 @@ public class Period implements Serializable {
     public String getDescription() {
         return description;
     }
+    public String getHtmlDescription() {
+        if (description==null || description.trim().equals("")) {
+            return "";
+        } else return description;
+    }
+    public boolean isHtmlDescriptionEmpty() {
+        return (description==null || description.trim().equals(""));
+    }
 
     @Override
     public boolean equals(Object o) {

@@ -33,6 +33,14 @@ public class Organization implements Serializable {
     public String getWebsite() {
         return website;
     }
+    public String getHtmlWebsite() {
+        if (website==null || website.trim().equals("")) {
+            return "";
+        } else return website;
+    }
+    public boolean isHtmlWebsiteEmpty() {
+        return (website==null || website.trim().equals(""));
+    }
 
     public List<Period> getPeriods() {
         return period;
