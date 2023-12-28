@@ -146,7 +146,7 @@ public class SqlStorage implements Storage {
     private static void saveContacts(ResultSet rs, Resume r) throws SQLException {
         String value = rs.getString("value");
         ContactType type = ContactType.valueOf(rs.getString("type"));
-        r.addContact(type, value);
+        r.setContact(type, value);
     }
 
     private static void saveSections(ResultSet rs, Resume r) throws SQLException {

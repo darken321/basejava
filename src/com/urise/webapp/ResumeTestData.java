@@ -24,13 +24,13 @@ public class ResumeTestData {
     public static Resume fillData(String uuid, String fullName) {
 
         Resume resume = new Resume(uuid, fullName);
-        resume.addContact(ContactType.PHONE, "+7(921) 855-0482");
-        resume.addContact(ContactType.SKYPE, "skype:grigory.kislin");
-        resume.addContact(ContactType.MAIL, "gkislin@yandex.ru");
-        resume.addContact(ContactType.LINKEDIN, "https://www.linkedin.com/in/gkislin");
-        resume.addContact(ContactType.GITHUB, "https://github.com/gkislin");
-        resume.addContact(ContactType.STACKOVERFLOW, "https://stackoverflow.com/users/548473");
-        resume.addContact(ContactType.HOMEPAGE, "http://gkislin.ru/");
+        resume.setContact(ContactType.PHONE, "+7(921) 855-0482");
+        resume.setContact(ContactType.SKYPE, "skype:grigory.kislin");
+        resume.setContact(ContactType.MAIL, "gkislin@yandex.ru");
+        resume.setContact(ContactType.LINKEDIN, "https://www.linkedin.com/in/gkislin");
+        resume.setContact(ContactType.GITHUB, "https://github.com/gkislin");
+        resume.setContact(ContactType.STACKOVERFLOW, "https://stackoverflow.com/users/548473");
+        resume.setContact(ContactType.HOMEPAGE, "http://gkislin.ru/");
 
         resume.setSection(SectionType.OBJECTIVE,
                 new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям"));
@@ -66,24 +66,24 @@ public class ResumeTestData {
         resume.setSection(SectionType.QUALIFICATIONS, new ListTextSection(stringsArray2));
 
         List<Organization> experience = new ArrayList<>();
-        List<Period> period1 = new ArrayList<>();
-        period1.add(new Period("10/2013", "Сейчас", "Автор проекта.", null));//"Создание, организация и проведение Java онлайн проектов и стажировок."));
+        List<Organization.Period> period1 = new ArrayList<>();
+        period1.add(new Organization.Period("10/2013", "Сейчас", "Автор проекта.", null));//"Создание, организация и проведение Java онлайн проектов и стажировок."));
         experience.add(new Organization("Java Online Projects",null, period1));// "http://javaops.ru/", period1));
-        List<Period> period2 = new ArrayList<>();
-        period2.add(new Period("10/2014", "01/2016", "Старший разработчик (backend)", "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO."));
+        List<Organization.Period> period2 = new ArrayList<>();
+        period2.add(new Organization.Period("10/2014", "01/2016", "Старший разработчик (backend)", "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO."));
         experience.add(new Organization("Wrike", "https://www.wrike.com/", period2));
         resume.setSection(SectionType.EXPERIENCE, new OrganizationSection(experience));
 
         List<Organization> education = new ArrayList<>();
-        List<Period> period3 = new ArrayList<>();
-        period3.add(new Period("03/2013", "05/2013", "'Functional Programming Principles in Scala' by Martin Odersky", ""));
+        List<Organization.Period> period3 = new ArrayList<>();
+        period3.add(new Organization.Period("03/2013", "05/2013", "'Functional Programming Principles in Scala' by Martin Odersky", ""));
         education.add(new Organization("Coursera", "https://www.coursera.org/course/progfun", period3));
-        List<Period> period4 = new ArrayList<>();
-        period4.add(new Period("03/2011", "04/2011", "Курс 'Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.'", ""));
+        List<Organization.Period> period4 = new ArrayList<>();
+        period4.add(new Organization.Period("03/2011", "04/2011", "Курс 'Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.'", ""));
         education.add(new Organization("Luxoft", "http://www.luxoft-training.ru/training/catalog/course.html?ID=22366", period4));
-        List<Period> period5 = new ArrayList<>();
-        period5.add(new Period("09/1993", "07/1996", "Аспирантура (программист С, С++)", ""));
-        period5.add(new Period("09/1987", "07/1993", "Инженер (программист Fortran, C)", ""));
+        List<Organization.Period> period5 = new ArrayList<>();
+        period5.add(new Organization.Period("09/1993", "07/1996", "Аспирантура (программист С, С++)", ""));
+        period5.add(new Organization.Period("09/1987", "07/1993", "Инженер (программист Fortran, C)", ""));
         education.add(new Organization("Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики", "http://www.ifmo.ru/", period5));
         resume.setSection(SectionType.EDUCATION, new OrganizationSection(education));
 

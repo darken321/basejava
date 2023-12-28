@@ -4,9 +4,6 @@ import com.urise.webapp.storage.SqlStorage;
 import com.urise.webapp.storage.Storage;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Properties;
 
 
@@ -14,11 +11,9 @@ public class Config {
     // текущий каталог .\\config\\resumes.properties
     // или                config\\resumes.properties
     protected static final File PROPS = new File(getHomeDir(), "config/resumes.properties");
-    //  protected static final File PROPS = new File("E:\\java\\Projects\\BaseJava\\config\\resumes.properties");
-//    String rootPath = Thread.currentThread().getContextClassLoader().getResource("").getPath();
     private static final Config INSTANCE = new Config();
     private final Properties props = new Properties();
-    private final File storageDir;
+//    private final File storageDir;
     private Storage storage;
 
     public static Config get() {
@@ -26,21 +21,22 @@ public class Config {
     }
 
     private Config() {
-        try (InputStream is = new FileInputStream(PROPS)) {
-            props.load(is);
+//        try (InputStream is = new FileInputStream(PROPS)) {
+//            props.load(is);
 
-            storageDir = new File(props.getProperty("storage.dir"));
-            storage = new SqlStorage(props.getProperty("db.url"), props.getProperty("db.user"), props.getProperty("db.password"));
-//            storage = new SqlStorage("jdbc:postgresql://localhost:5432/postgres", "postgres", "admin");
+//            storageDir = new File(props.getProperty("storage.dir"));
+//            storage = new SqlStorage(props.getProperty("db.url"), props.getProperty("db.user"), props.getProperty("db.password");
+//                                                                    поменять пароль на darken для удаленного или admin для локального сервера
+            storage = new SqlStorage("jdbc:postgresql://localhost:5432/postgres", "postgres", "darken");
 
-        } catch (IOException e) {
-
-            throw new IllegalStateException("Invalid config file " + PROPS.getAbsolutePath());
-        }
+//        } catch (IOException e) {
+//            throw new IllegalStateException("Invalid config file " + PROPS.getAbsolutePath());
+//        }
     }
 
     public File getStorageDir() {
-        return storageDir;
+//        return storageDir;
+        return null;
     }
 
     public Storage getStorage() {

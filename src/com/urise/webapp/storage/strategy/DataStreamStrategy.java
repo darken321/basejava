@@ -66,7 +66,7 @@ public class DataStreamStrategy implements StreamStrategy {
             String fullName = dis.readUTF();
             resume = new Resume(uuid, fullName);
 
-            readWithException(dis, () -> resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF()));
+            readWithException(dis, () -> resume.setContact(ContactType.valueOf(dis.readUTF()), dis.readUTF()));
 
             readWithException(dis, () -> {
                 String sectionName = dis.readUTF();
@@ -82,7 +82,7 @@ public class DataStreamStrategy implements StreamStrategy {
                     case "EXPERIENCE", "EDUCATION" -> {
                         List<Organization> organizations = readListWithException(dis, () ->
                                 new Organization(dis.readUTF(), dis.readUTF(),
-                                        readListWithException(dis, () -> new Period(dis.readUTF(), dis.readUTF(), dis.readUTF(), dis.readUTF()))));
+                                        readListWithException(dis, () -> new Organization.Period(dis.readUTF(), dis.readUTF(), dis.readUTF(), dis.readUTF()))));
                         resume.setSection(SectionType.valueOf(sectionName), new OrganizationSection(organizations));
                     }
                 }

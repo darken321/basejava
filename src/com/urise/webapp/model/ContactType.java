@@ -3,11 +3,11 @@ package com.urise.webapp.model;
 public enum ContactType {
     PHONE("Тел."),
     PHONEMOBILE("Мобильный"),
-    PHONEHOME("Домашний тел."),
+    PHONEHOME("Телеграм"),
     SKYPE("Skype"){
         @Override
         public String toHtml0(String value) {
-            return "<a href='skype:" + value + "'>" + value + "</a>";
+            return "Скайп <a href='skype:" + value + "'>" + value + "</a>";
         }
     },
     MAIL("Почта"){
@@ -38,6 +38,11 @@ public enum ContactType {
         return title + ": " + value;
     }
 
+    /**
+     * если значение null то возвращает ""
+     * @param value
+     * @return
+     */
     public String toHtml(String value) {
         return (value==null) ? "" : toHtml0(value);
     }

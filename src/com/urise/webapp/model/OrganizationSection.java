@@ -3,6 +3,7 @@ package com.urise.webapp.model;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import java.io.Serial;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -15,6 +16,10 @@ public class OrganizationSection extends Section<List<Organization>> {
     public OrganizationSection() {
     }
 
+    public OrganizationSection(Organization... organizations) {
+        this(Arrays.asList(organizations));
+    }
+
     public OrganizationSection(List<Organization> organizations) {
         Objects.requireNonNull(organizations,"Organizations must not be null");
         this.organizations = organizations;
@@ -25,7 +30,7 @@ public class OrganizationSection extends Section<List<Organization>> {
         for (Organization cs : organizations) {
             System.out.println(cs.getName());
             System.out.println(cs.getWebsite());
-            for (Period p : cs.getPeriods()) {
+            for (Organization.Period p : cs.getPeriods()) {
                 System.out.println(p.getStartDate() + " - " + p.getEndDate());
                 System.out.println(p.getTitle());
                 System.out.println(p.getDescription());
@@ -53,8 +58,6 @@ public class OrganizationSection extends Section<List<Organization>> {
 
     @Override
     public String toString() {
-        return "OrganizationSection{" +
-                "organizations=" + organizations +
-                '}';
+        return organizations.toString();
     }
 }

@@ -9,6 +9,9 @@ import java.util.Objects;
 public class TextSection extends Section<String> {
     @Serial
     private static final long serialVersionUID = 1L;
+
+    public static final TextSection EMPTY = new TextSection("");
+
     private String text;
 
     public TextSection() {
@@ -44,8 +47,6 @@ public class TextSection extends Section<String> {
 
     @Override
     public String toString() {
-        return "TextSection{" +
-                "text='" + text + '\'' +
-                '}';
+        return text;
     }
 }
